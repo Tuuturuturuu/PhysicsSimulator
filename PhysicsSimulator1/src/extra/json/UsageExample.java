@@ -37,7 +37,7 @@ public class UsageExample {
 		System.out.println("** Check is a key is defined");
 		System.out.println();
 
-		if (jo.has("a"))//si tiene una key que se llama a devuelve true y si no false
+		if (jo.has("a"))
 			System.out.println("It has a key 'a'!!");
 		else
 			System.out.println("It does not have a key 'a'!!");
