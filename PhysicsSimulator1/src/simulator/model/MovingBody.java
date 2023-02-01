@@ -3,19 +3,21 @@ package simulator.model;
 import simulator.misc.Vector2D;
 
 public class MovingBody extends Body{
-	private Vector2D a;
+	private Vector2D ac;
+	
 	@Override
 	void advance(double dt) {
-		//HAY QUE CALCULAR PRIMERO LA ACELERACION
-			 if (m == 0) {
-				 
-			 }
-			 else
-		
+		//HAY QUE CALCULAR PRIMERO LA ACELERACION O SOLP HAVERLA EN LA LEY DE LA GRAVITACION Y AQUI SETEARLA SOLO
+			Vector2D acc = new NewtonUniversalGravitation.apply();
 		//CAMBIA LA POSICION
-		p = p.plus(v.scale(dt)).plus(a.scale(1.0d / 2.0d).scale(dt*dt));
+		pos = pos.plus(vel.scale(dt)).plus(ac.scale(1.0d / 2.0d).scale(dt*dt));
 		//CAMBIA LA VELOCIDAD
-		v = v.plus(a.scale(dt));
+		vel = vel.plus(ac.scale(dt));
 	}
+	
+	void setAcceleration(Vector2D a) {
+		 this.ac = a;
+		 
+	 }
 
 }

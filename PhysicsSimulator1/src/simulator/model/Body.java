@@ -5,73 +5,85 @@ import org.json.JSONObject;
 import simulator.misc.Vector2D;
 
 public abstract class Body {
-	
+
 	protected String id;
 	protected String gid;
-	protected Vector2D v;
-	protected Vector2D p;
-	protected Vector2D f;
-	protected Double m;
-	
-	 Body(){
-		 
-	 }
-	 
-	 Body(String id, String gid, Vector2D v, Vector2D p, Double m ){
-		 this.id = id;
-		 this.gid = gid;
-		 this.v = v;
-		 this.p = p;
-		 this.m = m;
-		 
-		 //NO SE COMO ACTUALIZAR F A (0,0)
-		 //NO SE COMO HACER LA EXCEPCION QUE LANZA EL CONSTRUCTOR
-	 }
-	 
+	protected Vector2D vel;
+	protected Vector2D pos;
+	protected Vector2D force;
+	protected Double mass;
+
+	Body() {
+
+	}
+
+	Body(String id, String gid, Vector2D v, Vector2D p, Double m) {
+
+		if (id.trim().length() > 0 || id == null || gid.trim().length() > 0 || gid == null || v == null || p == null
+				|| m == null || m < 0) {
+			
+			throw new IllegalArgumentException("Body received invalid argument");
+			//PREGUNTAR SI METEMOS LOS MNSAJES EN CLASE A PARTE
+		}
+		
+		this.id = id;
+		this.gid = gid;
+		this.vel = v;
+		this.pos = p;
+		this.mass = m;
+		this.force = new Vector2D();
+	}
+
 	public String getId() {
 		return id;
 	}
+
 	public String getgId() {
 		return gid;
 	}
+
 	public Vector2D getVelocity() {
-		return v;
+		return vel;
 	}
+
 	public Vector2D getForce() {
-		return f;
+		return force;
 	}
+
 	public Vector2D getPosition() {
-		return p;
+		return pos;
 	}
+
 	public double getMass() {
-		return m;
+		return mass;
 	}
-	
+
 	void addForce(Vector2D f) {
 		f.plus(f);
-		//NO SE SI HACE FALTA MAS
 	}
+
 	void resetForce() {
-		//NO SE COMO PONER EL VALOR DEL VECTOR DE FUERZA A (0,0)
+		this.force = new Vector2D();
+
 	}
-	
-	//QUEDA ASI? IMPLEMENTACION EN MOVINGBODY?
+
 	abstract void advance(double dt);
-	
+
 	public JSONObject getState() {
-		
+
 		JSONObject jo = new JSONObject();
-		
-		jo.put("id",this.id);
-		jo.put("m",this.m);
-		jo.put("p",this.p);
-		jo.put("v",this.v);
-		jo.put("f",this.f);
-		
+
+		jo.put("id", this.id);
+		jo.put("m", this.mass);
+		jo.put("p", this.pos);
+		jo.put("v", this.vel);
+		jo.put("f", this.force);
+
 		return jo;
 	}
+
 	public String toString() {
 		return getState().toString();
-		
+
 	}
 }
