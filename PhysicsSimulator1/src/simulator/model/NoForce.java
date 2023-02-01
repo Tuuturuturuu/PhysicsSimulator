@@ -7,7 +7,6 @@ public class NoForce implements ForceLaws{
 	@Override
 	public void apply(List<Body> bodies) {
 		
-		
 	}
 
 }

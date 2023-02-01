@@ -4,7 +4,5 @@ public class StationaryBody extends Body{
 
 	void advance(double dt) {
 		
-		
 	}
-
 }
