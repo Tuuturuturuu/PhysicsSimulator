@@ -7,6 +7,7 @@ import simulator.misc.Vector2D;
 public abstract class Body {
 	
 	//hola lucia
+	//hola sofia
 
 	protected String id;
 	protected String gid;
