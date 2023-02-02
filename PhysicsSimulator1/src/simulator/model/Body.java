@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import simulator.misc.Vector2D;
 
 public abstract class Body {
+	
+	//hola lucia
 
 	protected String id;
 	protected String gid;
