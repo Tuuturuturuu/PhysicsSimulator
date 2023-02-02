@@ -9,11 +9,9 @@ public class BodiesGroup {
 	private ForceLaws laws;
 	private List<Body> bodyList;
 	
-	BodiesGroup(){
-		
-	}
+	BodiesGroup(){}
 	
-	BodiesGroup(String gid, ForceLaws laws){
+	BodiesGroup(String gid, ForceLaws laws){ //HAY QUE SEPARAR ESTE IF EN IF/ELSE PAR ATENER DOS EXCPECIONES DISTINTAS 
 		
 		if (gid == null || laws == null || gid.trim().length()>0 ) {
 			
@@ -27,7 +25,7 @@ public class BodiesGroup {
 	public String getId() {
 		return this.gid;
 	}
-	void setForceLaws(ForceLaws fl) {
+	void setForceLaws(ForceLaws fl) { //HAY QUE PONER EXCEPCION 
 		this.laws = fl;
 	}
 	
@@ -38,7 +36,7 @@ public class BodiesGroup {
 		//QUEDA POR HACER
 	}
 	
-	public JSONObject getState() {
+	public JSONObject getState() { //REVISAR CON PABLO
 		JSONObject jo1 = new JSONObject();
 
 		jo1.put("id", this.gid);

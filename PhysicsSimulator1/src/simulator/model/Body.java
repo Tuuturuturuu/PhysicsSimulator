@@ -6,8 +6,6 @@ import simulator.misc.Vector2D;
 
 public abstract class Body {
 	
-	//hola lucia
-	//hola sofia
 
 	protected String id;
 	protected String gid;
@@ -26,7 +24,7 @@ public abstract class Body {
 				|| m == null || m < 0) {
 			
 			throw new IllegalArgumentException("Body received invalid argument");
-			//PREGUNTAR SI METEMOS LOS MNSAJES EN CLASE A PARTE
+			//PREGUNTAR SI METEMOS LOS MNSAJES EN CLASE A PARTE Y PREGUNTAR SI EL THROW VA ARRIBA EN LA CABECERA 
 		}
 		
 		this.id = id;

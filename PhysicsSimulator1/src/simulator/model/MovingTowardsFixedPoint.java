@@ -17,12 +17,11 @@ public class MovingTowardsFixedPoint implements ForceLaws{
 		this.g = g;
 	}
 	
-	@Override
-	public void apply(List<Body> bodies) {
-		for( Body b : bodies) {
-			//AÑADIR LA FUERZA
-			//b.setAcceleration(b.pos.direction().scale(-g));
-			// b tendria que ser MovingBody pues hi setteas  la acc
+	public void apply(List<Body> bodies) { //REVISAR CON DIEGO
+		for(Body bi : bodies) {
+			Vector2D di = new Vector2D();
+			di = di.direction().scale(-g);
+			
 		}
 	}
 
