@@ -20,12 +20,11 @@ public abstract class Body {
 
 	Body(String id, String gid, Vector2D v, Vector2D p, Double m) {
 
-		if (id.trim().length() > 0 || id == null || gid.trim().length() > 0 || gid == null || v == null || p == null
-				|| m == null || m < 0) {
+		if ( id == null || gid == null || v == null || p == null || m == null || m < 0) 
+			throw new IllegalArgumentException("Body received null or negative parameter");
 			
-			throw new IllegalArgumentException("Body received invalid argument");
-			//PREGUNTAR SI METEMOS LOS MNSAJES EN CLASE A PARTE Y PREGUNTAR SI EL THROW VA ARRIBA EN LA CABECERA 
-		}
+		else if(id.trim().length() > 0 || gid.trim().length() > 0 )
+			throw new IllegalArgumentException("Body received invalid parameter");
 		
 		this.id = id;
 		this.gid = gid;
