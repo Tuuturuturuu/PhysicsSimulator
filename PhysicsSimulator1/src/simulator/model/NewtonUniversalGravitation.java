@@ -10,8 +10,8 @@ public class NewtonUniversalGravitation implements ForceLaws{
 	
 	
 	private NewtonUniversalGravitation(Double g) {
-		if(g < 0) {
-			throw new IllegalArgumentException("G received is negative");
+		if (g < 0) {
+			throw new IllegalArgumentException("Parameter received is negative");
 		}
 	}
 	public void apply(List<Body> bodies) { //REVISAR METODO ENTERO 

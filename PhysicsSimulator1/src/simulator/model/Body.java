@@ -59,7 +59,7 @@ public abstract class Body {
 	}
 
 	void addForce(Vector2D f) {
-		f.plus(f);
+		force.plus(f);
 	}
 
 	void resetForce() {
