@@ -20,11 +20,21 @@ public abstract class Body {
 
 	Body(String id, String gid, Vector2D v, Vector2D p, Double m) {
 
-		if (id.trim().length() > 0 || id == null || gid.trim().length() > 0 || gid == null || v == null || p == null
-				|| m == null || m < 0) {
+		if (id.trim().length() > 0 || gid.trim().length() > 0) {
 			
 			throw new IllegalArgumentException("Body received invalid argument");
+<<<<<<< Updated upstream
 			//PREGUNTAR SI METEMOS LOS MNSAJES EN CLASE A PARTE Y PREGUNTAR SI EL THROW VA ARRIBA EN LA CABECERA 
+=======
+<<<<<<< HEAD
+		}
+		else if ( id == null || gid == null  || v == null || p == null || m == null ||  m < 0) {
+			
+			throw new IllegalArgumentException("Body received null parameter");
+=======
+			//PREGUNTAR SI METEMOS LOS MNSAJES EN CLASE A PARTE Y PREGUNTAR SI EL THROW VA ARRIBA EN LA CABECERA 
+>>>>>>> 9cdf322804edc940e6539eee10c49ccc6b3667b2
+>>>>>>> Stashed changes
 		}
 		
 		this.id = id;
@@ -80,6 +90,7 @@ public abstract class Body {
 		jo.put("v", this.vel);
 		jo.put("f", this.force);
 
+		
 		return jo;
 	}
 
