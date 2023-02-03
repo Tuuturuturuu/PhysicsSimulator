@@ -6,8 +6,8 @@ public class MovingBody extends Body{
 	
 	@Override
 	void advance(double dt) {
-	
-		Vector2D ac = new Vector2D();
+		
+		Vector2D ac;
 		
 		if(mass != 0.0d) {
 

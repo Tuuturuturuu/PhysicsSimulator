@@ -86,4 +86,9 @@ public abstract class Body {
 		return getState().toString();
 
 	}
+
+	void resetVelocity() {
+		this.vel = new Vector2D();
+	}
+	
 }
