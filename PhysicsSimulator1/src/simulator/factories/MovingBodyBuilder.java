@@ -2,7 +2,9 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
+import simulator.misc.Vector2D;
 import simulator.model.Body;
+import simulator.model.MovingBody;
 
 public class MovingBodyBuilder extends Builder<Body>{
 
@@ -13,8 +15,11 @@ public class MovingBodyBuilder extends Builder<Body>{
 
 	@Override
 	protected Body createInstance(JSONObject data) {
-		// TODO Auto-generated method stub
-		return null;
+		
+	//String id, String gid, Vector2D v, Vector2D p, Double m
+		//creaar un contrsuctor en moving body?
+
+		return new MovingBody(data.getString("id"), data.getString("gid"),  new Vector2D(), new Vector2D(), data.getDouble("mass"));
 	}
 
 }

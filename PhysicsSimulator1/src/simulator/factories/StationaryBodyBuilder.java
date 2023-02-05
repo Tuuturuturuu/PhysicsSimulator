@@ -3,6 +3,7 @@ package simulator.factories;
 import org.json.JSONObject;
 
 import simulator.model.Body;
+import simulator.model.StationaryBody;
 
 public class StationaryBodyBuilder extends Builder<Body>{
 
@@ -14,7 +15,7 @@ public class StationaryBodyBuilder extends Builder<Body>{
 	@Override
 	protected Body createInstance(JSONObject data) {
 		// TODO Auto-generated method stub
-		return null;
+		return new StationaryBody();
 	}
 
 }

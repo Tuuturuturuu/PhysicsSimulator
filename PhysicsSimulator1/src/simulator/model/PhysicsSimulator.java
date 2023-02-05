@@ -13,7 +13,8 @@ public class PhysicsSimulator {
 	private ForceLaws fl;
 	private List<Body> bodyList;
 	private Double tiempoActual;
-	private Map<String,BodiesGroup> map;
+	private Map<String, BodiesGroup> map;
+	private List<String> listOrderedGroupIds;
 
 	PhysicsSimulator(Double t, ForceLaws fl) {
 		if (t == null || fl == null)
@@ -23,9 +24,9 @@ public class PhysicsSimulator {
 		this.t = t;
 		this.bodyList = new ArrayList<Body>();
 		this.tiempoActual = 0.0d;
-		
-		//PREGUNTAR SI AQUI ES UN MAP A SECAS (DA ERROR) O HASHMAP
-		this.map = new HashMap<String,BodiesGroup>();
+
+		// PREGUNTAR SI AQUI ES UN MAP A SECAS (DA ERROR) O HASHMAP
+		this.map = new HashMap<String, BodiesGroup>();
 	}
 
 	public void advance() {
@@ -40,57 +41,48 @@ public class PhysicsSimulator {
 	}
 
 	public void addGroup(String id) {
-		//NO SE SI SE HACE ASI
-		BodiesGroup bodiesGroup = new BodiesGroup(id, this.fl);
-		
-		//NO SE COMO COMPROBAR SI HAY MAS GRUPOS EN EL MAPA CON EL MISMO ID
-		//Y SI LOS HAY LANZAR LA EXCEPCION
-		
-		//throw new IllegalArgumentException();
-		
 
-		map.put(id, bodiesGroup);
+		BodiesGroup bodiesGroup = new BodiesGroup(id, this.fl);
+
+		if (map.containsKey(id))
+			throw new IllegalArgumentException("Bodies Group already has that id");
+		else {
+			map.put(id, bodiesGroup);
+			// ASI PONGO LOS ID DE LOS GRUOPOS EN ORDEN SEGUN SE CREAN?
+			listOrderedGroupIds.add(id);
+		}
 	}
 
-	public void addBody(Body b) {// ES IGUAL QUE EL ADDBODY DE BODYGROUP
+	public void addBody(Body b) {
 		if (b == null)
 			throw new IllegalArgumentException("Illegal parameter: Body received is null");
 
-		for (Body bi : bodyList) {
-
-			if (b.getgId() == bi.getId()) {
-				throw new IllegalArgumentException("Illegal parameter: Body is already in Bodies Group");
-			} else
-				// AÑADIR B AL BODIES GROUP, NO SE SI ESTA BIEN ASI
-				bodyList.add(b);
-		}
+		if (bodyList.contains(b))
+			throw new IllegalArgumentException("Illegal parameter: Body is already in Bodies Group");
+		else
+			bodyList.add(b);
 	}
 
 	public void setForceLaws(String id, ForceLaws f) {
 
-		// TENGO QUE HACERLO CON EL MAPA? COMO COMPARO LOS ID?
-		//TENGO Q PONER UN ATRIBUTO TIPO BODIESGROUPS? O OL CREO AQUI Y SETTEO SU FL Y SU ID?
-	
-		BodiesGroup bodiesGroup = new BodiesGroup(id, f);
-		//NO SE SI ESTÁ BIEN
-		
-		//EL MISMO PROBELMA Q EN ADGROUP, NO SE CMO LANZAR LA EXCEPCION
+		if (!map.containsKey(id))
+			throw new IllegalArgumentException("That Bodies Group id doesnt exist in the map");
+
+		else
+			map.get(id).setForceLaws(f);
 
 	}
 
-	public JSONObject getState() {
+	public JSONObject getState() {// PREGUNTAR GORDILLO SI ITERAS SOBRE BODYLIST O LOS BODYGROUPS DEL MAPA
 
 		JSONObject jo = new JSONObject();
-		JSONObject jo2 = new JSONObject();
 
 		jo.put("time", tiempoActual);
 
-		for (Body b : bodyList) {
-			//jo2.put(b.toString());
+		for (String id : listOrderedGroupIds) {//ASI ITERO SOBRE LOS IDS DE LOS GRUPOS ORDENADOS?
+
+			jo.put("groups", map.get(id));
 		}
-
-		jo.put("groups", jo2);
-
 		return jo;
 	}
 

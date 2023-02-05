@@ -3,6 +3,7 @@ package simulator.factories;
 import org.json.JSONObject;
 
 import simulator.model.ForceLaws;
+import simulator.model.MovingTowardsFixedPoint;
 
 public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
@@ -14,7 +15,7 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 	@Override
 	protected ForceLaws createInstance(JSONObject data) {
 		// TODO Auto-generated method stub
-		return null;
+		return new MovingTowardsFixedPoint();
 	}
 
 }
