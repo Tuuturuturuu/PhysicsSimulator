@@ -1,21 +1,28 @@
 package simulator.factories;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import simulator.misc.Vector2D;
 import simulator.model.ForceLaws;
 import simulator.model.MovingTowardsFixedPoint;
 
 public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
 	public MovingTowardsFixedPointBuilder(String typeTag, String desc) {
+		
 		super(typeTag, desc);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected ForceLaws createInstance(JSONObject data) {
-		// TODO Auto-generated method stub
-		return new MovingTowardsFixedPoint();
+
+		JSONArray jac = data.getJSONArray("c");
+		Vector2D c = new Vector2D(jac.getInt(0), jac.getInt(1));
+
+		Double g = data.getDouble("g");
+		
+		return new MovingTowardsFixedPoint(c, g);
 	}
 
 }

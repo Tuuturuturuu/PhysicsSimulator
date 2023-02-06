@@ -9,10 +9,8 @@ public class BodiesGroup {
 	private ForceLaws laws;
 	private List<Body> bodyList;
 
-	BodiesGroup() {
-	}
 
-	BodiesGroup(String id, ForceLaws laws) { // HAY QUE SEPARAR ESTE IF EN IF/ELSE PAR ATENER DOS EXCPECIONES DISTINTAS
+	public BodiesGroup(String id, ForceLaws laws) { // HAY QUE SEPARAR ESTE IF EN IF/ELSE PAR ATENER DOS EXCPECIONES DISTINTAS
 
 		if (id == null || laws == null)
 			throw new IllegalArgumentException("Bodies Group received null parameter");

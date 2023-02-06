@@ -6,17 +6,16 @@ import simulator.model.ForceLaws;
 import simulator.model.NewtonUniversalGravitation;
 
 public class NewtonUniversalGravitationBuilder extends Builder<ForceLaws> {
-	
 
 	public NewtonUniversalGravitationBuilder(String typeTag, String desc) {
+		
 		super(typeTag, desc);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected ForceLaws createInstance(JSONObject data) {
-		// TODO Auto-generated method stub
-		return new NewtonUniversalGravitation();
+		
+		return new NewtonUniversalGravitation(data.getDouble("G"));
 	}
 
 }

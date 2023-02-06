@@ -14,11 +14,8 @@ public abstract class Body {
 	protected Vector2D force;
 	protected Double mass;
 
-	Body() {
 
-	}
-
-	Body(String id, String gid, Vector2D v, Vector2D p, Double m) {
+	public Body(String id, String gid, Vector2D v, Vector2D p, Double m) {
 
 		if ( id == null || gid == null || v == null || p == null || m == null || m < 0) 
 			throw new IllegalArgumentException("Body received null or negative parameter");

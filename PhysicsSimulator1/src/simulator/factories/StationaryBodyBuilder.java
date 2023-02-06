@@ -1,21 +1,33 @@
 package simulator.factories;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import simulator.misc.Vector2D;
 import simulator.model.Body;
 import simulator.model.StationaryBody;
 
 public class StationaryBodyBuilder extends Builder<Body>{
 
 	public StationaryBodyBuilder(String typeTag, String desc) {
+		
 		super(typeTag, desc);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected Body createInstance(JSONObject data) {
-		// TODO Auto-generated method stub
-		return new StationaryBody();
+		
+		String id = data.getString("id");
+		String gid = data.getString("gid");
+		
+		
+		JSONArray jap = data.getJSONArray("p");
+		Vector2D p = new Vector2D(jap.getDouble(0), jap.getDouble(1));
+		
+		Double m = data.getDouble("m");
+
+		return new StationaryBody(id, gid, p, m);
+
 	}
 
 }

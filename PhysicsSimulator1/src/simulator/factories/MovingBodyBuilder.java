@@ -1,25 +1,33 @@
 package simulator.factories;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.misc.Vector2D;
 import simulator.model.Body;
 import simulator.model.MovingBody;
 
-public class MovingBodyBuilder extends Builder<Body>{
+public class MovingBodyBuilder extends Builder<Body> {
 
 	public MovingBodyBuilder(String typeTag, String desc) {
+		
 		super(typeTag, desc);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected Body createInstance(JSONObject data) {
+		String id = data.getString("id");
+		String gid = data.getString("gid");
 		
-	//String id, String gid, Vector2D v, Vector2D p, Double m
-		//creaar un contrsuctor en moving body?
+		JSONArray jav = data.getJSONArray("v");
+		Vector2D v = new Vector2D(jav.getDouble(0), jav.getDouble(1));
+		
+		JSONArray jap = data.getJSONArray("p");
+		Vector2D p = new Vector2D(jap.getDouble(0), jap.getDouble(1));
+		
+		Double m = data.getDouble("m");
 
-		return new MovingBody(data.getString("id"), data.getString("gid"),  new Vector2D(), new Vector2D(), data.getDouble("mass"));
+		return new MovingBody(id, gid, v, p, m);
 	}
 
 }

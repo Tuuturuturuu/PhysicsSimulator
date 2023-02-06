@@ -8,7 +8,7 @@ public class MovingTowardsFixedPoint implements ForceLaws{
 	private Vector2D c;
 	private Double g;
 	
-	MovingTowardsFixedPoint(Vector2D c, Double g){
+	public MovingTowardsFixedPoint(Vector2D c, Double g){
 		
 		if (c == null || g < 0) {
 			throw new IllegalArgumentException("Received invalid parameter");

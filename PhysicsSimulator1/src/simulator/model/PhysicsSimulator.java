@@ -16,7 +16,7 @@ public class PhysicsSimulator {
 	private Map<String, BodiesGroup> map;
 	private List<String> listOrderedGroupIds;
 
-	PhysicsSimulator(Double t, ForceLaws fl) {
+	public PhysicsSimulator(Double t, ForceLaws fl) {
 		if (t == null || fl == null)
 			throw new IllegalArgumentException("");
 

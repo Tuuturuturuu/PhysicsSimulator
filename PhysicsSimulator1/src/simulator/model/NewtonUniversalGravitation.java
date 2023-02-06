@@ -6,12 +6,13 @@ import simulator.misc.Vector2D;
 
 public class NewtonUniversalGravitation implements ForceLaws {
 
-	private final Double G = 6.67E-11d;
+	private Double g;
 
-	private NewtonUniversalGravitation(Double g) {
+	public NewtonUniversalGravitation(Double g) {
 		if (g < 0) {
 			throw new IllegalArgumentException("Parameter received is negative");
 		}
+		this.g = g;
 	}
 
 	public void apply(List<Body> bodies) {
@@ -30,7 +31,7 @@ public class NewtonUniversalGravitation implements ForceLaws {
 					if (dis > 0) {
 
 						fi = fi.plus(bj.getPosition().minus(bi.getPosition()).direction()
-								.scale((G * bi.getMass() * bj.getMass() / (dis * (dis)))));
+								.scale((g * bi.getMass() * bj.getMass() / (dis * (dis)))));
 
 					}
 					//NO HAY ELSE CON LA OPCIÓN DE (DIS== 0) PORQ SI LA DISTANCIA DIS (PJ-PI) ES CERO, 
