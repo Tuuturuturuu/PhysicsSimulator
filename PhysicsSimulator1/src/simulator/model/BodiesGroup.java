@@ -27,7 +27,7 @@ public class BodiesGroup {
 	}
 
 	void setForceLaws(ForceLaws fl) {
-		if (id == null)
+		if (fl == null)
 			throw new IllegalArgumentException("Bodies Group received null Force Law");
 
 		this.laws = fl;
@@ -41,7 +41,6 @@ public class BodiesGroup {
 		if (bodyList.contains(b)) {
 			throw new IllegalArgumentException("Illegal parameter: Body is already in Bodies Group");
 		} else
-			// AÑADIR UN CUERPO NUEVO A LA LISTA, NO SE SI ESTA BIEN
 			bodyList.add(b);
 	}
 
@@ -56,7 +55,7 @@ public class BodiesGroup {
 		}
 	}
 
-	public JSONObject getState() { // REVISAR CON PABLO
+	public JSONObject getState() { 
 		JSONObject jo1 = new JSONObject();
 
 		jo1.put("id", this.id);
@@ -64,7 +63,6 @@ public class BodiesGroup {
 		for (Body bbi : bodyList) {
 			jo1.put("bodies", bbi.getState());
 		}
-		// NO ESTOY SEGURA DE QUE SEA ASI EL METER LA LISTA DE CUERPOS
 
 		return jo1;
 	}

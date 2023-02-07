@@ -7,6 +7,8 @@ import simulator.misc.Vector2D;
 public class NewtonUniversalGravitation implements ForceLaws {
 
 	private Double g;
+	// NO ES CTE, SE PASA COMO PARAMETRO EN EL CONTRUCTOR PARA LAS GS DE DISTINTOS
+	// PLANETAS
 
 	public NewtonUniversalGravitation(Double g) {
 		if (g < 0) {
@@ -21,11 +23,12 @@ public class NewtonUniversalGravitation implements ForceLaws {
 
 			if (bi.getMass() != 0.0d) {
 
-				Vector2D fi = new Vector2D();
+				Vector2D fi = new Vector2D();// ES LA FI TOTAL
 
 				for (Body bj : bodies) {
 
-					// ESTO ES |pi-pj|, SI LOS VALORES DAN MAL ELIMINAR DIS Y METERLO EN LA FORMULA DE FI
+					// ESTO ES |pi-pj|, SI LOS VALORES DAN MAL ELIMINAR DIS Y METERLO EN LA FORMULA
+					// DE FI
 					Double dis = bj.getPosition().distanceTo(bi.getPosition());
 
 					if (dis > 0) {
@@ -34,8 +37,9 @@ public class NewtonUniversalGravitation implements ForceLaws {
 								.scale((g * bi.getMass() * bj.getMass() / (dis * (dis)))));
 
 					}
-					//NO HAY ELSE CON LA OPCIÓN DE (DIS== 0) PORQ SI LA DISTANCIA DIS (PJ-PI) ES CERO, 
-					//NO SE SUMA NINGUNA FUERZA, POR LO TANTO NO SE HACE NADA
+					// NO HAY ELSE CON LA OPCIÓN DE (DIS== 0) PORQ SI LA DISTANCIA DIS (PJ-PI) ES
+					// CERO,
+					// NO SE SUMA NINGUNA FUERZA, POR LO TANTO NO SE HACE NADA
 				}
 
 				bi.addForce(fi);
@@ -43,10 +47,6 @@ public class NewtonUniversalGravitation implements ForceLaws {
 			} else {
 
 				bi.resetForce();
-				// LO DE RESETEAR LA ACELERACION ES UN TYPO? SE HACE QUI O SE HACE EN MOVING
-				// BODY?
-				// DEBERIA TENER ESTE SETTER/RESET EN BODY AUNQ NO VENGA EN EL UML? SI NO COMO
-				// PONGO A 0 LA VELOCIDAD?
 				bi.resetVelocity();
 
 			}

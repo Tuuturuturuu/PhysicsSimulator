@@ -24,20 +24,17 @@ public class PhysicsSimulator {
 		this.t = t;
 		this.bodyList = new ArrayList<Body>();
 		this.tiempoActual = 0.0d;
-
-		// PREGUNTAR SI AQUI ES UN MAP A SECAS (DA ERROR) O HASHMAP
 		this.map = new HashMap<String, BodiesGroup>();
 	}
 
 	public void advance() {
 
 		// HAY QUE PRIMERO APLICARLE UNA LEY?
-		for (Body bi : bodyList) {
+		for (Body bi : bodyList) {//CAMBIAR ESTO NO RECORRE LA BODYLIST SI NO LOS BODY GROUPS DEL MAPA
 			bi.advance(t); // TIEMPO REAL POR PASO
 		}
 		// INCREMENTA ELTIEMPO ACTUAL EN T SEGUNDOS
 		this.tiempoActual += t;
-
 	}
 
 	public void addGroup(String id) {
@@ -65,7 +62,7 @@ public class PhysicsSimulator {
 
 	public void setForceLaws(String id, ForceLaws f) {
 
-		if (!map.containsKey(id))
+		if (map.containsKey(id))
 			throw new IllegalArgumentException("That Bodies Group id doesnt exist in the map");
 
 		else
@@ -73,15 +70,16 @@ public class PhysicsSimulator {
 
 	}
 
-	public JSONObject getState() {// PREGUNTAR GORDILLO SI ITERAS SOBRE BODYLIST O LOS BODYGROUPS DEL MAPA
+	public JSONObject getState() {
 
 		JSONObject jo = new JSONObject();
 
 		jo.put("time", tiempoActual);
 
-		for (String id : listOrderedGroupIds) {//ASI ITERO SOBRE LOS IDS DE LOS GRUPOS ORDENADOS?
+		for (String id : listOrderedGroupIds) {
 
 			jo.put("groups", map.get(id));
+			//json array en groups
 		}
 		return jo;
 	}

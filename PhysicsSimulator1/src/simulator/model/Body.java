@@ -64,6 +64,10 @@ public abstract class Body {
 
 	}
 
+	void resetVelocity() {
+		this.vel = new Vector2D();
+	}
+	
 	abstract void advance(double dt);
 
 	public JSONObject getState() {
@@ -75,7 +79,7 @@ public abstract class Body {
 		jo.put("p", this.pos);
 		jo.put("v", this.vel);
 		jo.put("f", this.force);
-
+		
 		return jo;
 	}
 
@@ -84,8 +88,6 @@ public abstract class Body {
 
 	}
 
-	void resetVelocity() {
-		this.vel = new Vector2D();
-	}
+	
 	
 }
