@@ -9,9 +9,10 @@ import simulator.model.MovingBody;
 
 public class MovingBodyBuilder extends Builder<Body> {
 
-	public MovingBodyBuilder(String typeTag, String desc) {
+	public MovingBodyBuilder() {
 		
-		super(typeTag, desc);
+		super("mv_body", "Moving body");
+	
 	}
 
 	@Override

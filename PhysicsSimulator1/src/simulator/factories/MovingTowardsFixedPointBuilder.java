@@ -9,9 +9,9 @@ import simulator.model.MovingTowardsFixedPoint;
 
 public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
-	public MovingTowardsFixedPointBuilder(String typeTag, String desc) {
+	public MovingTowardsFixedPointBuilder() {
 		
-		super(typeTag, desc);
+		super("mtfp", "Moving towards a fixed point");
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class PhysicsSimulator {
@@ -73,16 +74,20 @@ public class PhysicsSimulator {
 	public JSONObject getState() {
 
 		JSONObject jo = new JSONObject();
+		JSONArray ja = new JSONArray();
 
 		jo.put("time", tiempoActual);
 
 		for (String id : listOrderedGroupIds) {
 
-			jo.put("groups", map.get(id));
-			//json array en groups
+			ja.put(map.get(id).getState());//TO STRING O GETSATE?
 		}
+		
+		jo.put("groups", ja);
+		 
 		return jo;
 	}
+
 
 	public String toString() {
 		return getState().toString();

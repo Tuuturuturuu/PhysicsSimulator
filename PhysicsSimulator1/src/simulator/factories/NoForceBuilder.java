@@ -7,9 +7,9 @@ import simulator.model.NoForce;
 
 public class NoForceBuilder extends Builder<ForceLaws>{
 
-	public NoForceBuilder(String typeTag, String desc) {
+	public NoForceBuilder() {
 		
-		super(typeTag, desc);
+		super("nf", "No  force");
 
 	}
 

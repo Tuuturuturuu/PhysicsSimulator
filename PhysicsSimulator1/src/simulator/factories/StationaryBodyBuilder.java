@@ -9,9 +9,9 @@ import simulator.model.StationaryBody;
 
 public class StationaryBodyBuilder extends Builder<Body>{
 
-	public StationaryBodyBuilder(String typeTag, String desc) {
+	public StationaryBodyBuilder() {
 		
-		super(typeTag, desc);
+		super("st_body", "Stationary Body");
 	}
 
 	@Override

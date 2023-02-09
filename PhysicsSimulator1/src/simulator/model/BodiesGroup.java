@@ -2,6 +2,7 @@ package simulator.model;
 
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class BodiesGroup {
@@ -57,13 +58,15 @@ public class BodiesGroup {
 
 	public JSONObject getState() { 
 		JSONObject jo1 = new JSONObject();
+		JSONArray ja = new JSONArray();
 
 		jo1.put("id", this.id);
 
 		for (Body bbi : bodyList) {
-			jo1.put("bodies", bbi.getState());
+			ja.put(bbi.getState());//TO STRING?
 		}
-
+		
+		jo1.put("bodies", ja);
 		return jo1;
 	}
 

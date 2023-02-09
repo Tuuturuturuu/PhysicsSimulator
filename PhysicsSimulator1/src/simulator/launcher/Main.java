@@ -1,5 +1,11 @@
 package simulator.launcher;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -10,9 +16,17 @@ import org.apache.commons.cli.ParseException;
 import org.json.JSONObject;
 
 import simulator.factories.Factory;
+import simulator.factories.MovingBodyBuilder;
+import simulator.factories.MovingTowardsFixedPointBuilder;
+import simulator.factories.NewtonUniversalGravitationBuilder;
+import simulator.factories.NoForceBuilder;
+import simulator.factories.StationaryBodyBuilder;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
-
+import simulator.model.PhysicsSimulator;
+import simulator.factories.Builder;
+import simulator.factories.BuilderBasedFactory;
+import simulator.control.Controller;
 
 public class Main {
 
@@ -36,6 +50,18 @@ public class Main {
 
 	private static void initFactories() {
 
+		// INICIALIZAR LA FACTORIA DE BODIES
+		ArrayList<Builder<Body>> bodyBuilders = new ArrayList<>();
+		bodyBuilders.add(new MovingBodyBuilder());
+		bodyBuilders.add(new StationaryBodyBuilder());
+		_bodyFactory = new BuilderBasedFactory<Body>(bodyBuilders);
+
+		// INICIALIZAR LA FACTORIA DE FORCELAWS
+		ArrayList<Builder<ForceLaws>> forceLawsBuilders = new ArrayList<>();
+		forceLawsBuilders.add(new NewtonUniversalGravitationBuilder());
+		forceLawsBuilders.add(new MovingTowardsFixedPointBuilder());
+		forceLawsBuilders.add(new NoForceBuilder());
+		_forceLawsFactory = new BuilderBasedFactory<ForceLaws>(forceLawsBuilders);
 	}
 
 	private static void parseArgs(String[] args) {
@@ -93,6 +119,13 @@ public class Main {
 						+ factoryPossibleValues(_forceLawsFactory) + ". Default value: '" + _forceLawsDefaultValue
 						+ "'.")
 				.build());
+		// output file
+		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg()
+				.desc("Output file, where output is written. Default\n" + "value: the standard output.").build());
+
+		// steps
+		cmdLineOptions.addOption(Option.builder("s").longOpt("steps").hasArg()
+				.desc(" An integer representing the number of simulation\n" + "steps. Default value: 150.").build());
 
 		return cmdLineOptions;
 	}
@@ -189,6 +222,17 @@ public class Main {
 	}
 
 	private static void startBatchMode() throws Exception {
+
+		ForceLaws fl = _forceLawsFactory.createInstance(_forceLawsInfo);
+		PhysicsSimulator pSimulator = new PhysicsSimulator(_dtime, fl);
+		Controller controller = new Controller(pSimulator, _bodyFactory, _forceLawsFactory);
+
+		InputStream input = new FileInputStream(_inFile);
+		OutputStream output = new FileOutputStream(_outFile);
+
+		controller.loadData(input);
+		controller.run(_steps, output);
+
 	}
 
 	private static void start(String[] args) throws Exception {
