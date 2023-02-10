@@ -15,12 +15,12 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 
 	public BuilderBasedFactory() {
 		this._builders = new HashMap<String, Builder<T>>();
-		this._buildersInfo =  new LinkedList<JSONObject>();
+		this._buildersInfo = new LinkedList<JSONObject>();
 	}
 
 	public BuilderBasedFactory(List<Builder<T>> builders) {
 		this();
-		
+
 		for (Builder<T> b : builders) {
 			addBuilder(b);
 		}
@@ -33,27 +33,24 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 
 	@Override
 	public T createInstance(JSONObject info) {
-		
+
 		T instance;
-		
+
 		if (info == null) {
 			throw new IllegalArgumentException("Invalid value for createInstance: null");
 		}
-		
-			if(_builders.containsKey(info.getString("type"))) {
-				
-				instance = _builders.get(info.getString("type")).createInstance(info.getJSONObject("data"));
-				
-				if(instance == null) {
-					throw new IllegalArgumentException("Invalid value for instance: null");
-				}
-				else {
-					return instance;	
-				}
+
+		if (_builders.containsKey(info.getString("type"))) {
+
+			instance = _builders.get(info.getString("type")).createInstance(info.getJSONObject("data"));
+
+			if (instance == null) {
+				throw new IllegalArgumentException("Invalid value for instance: null");
+			} else {
+				return instance;
 			}
-			else
-				throw new IllegalArgumentException("Invalid value for createInstance: " +
-						info.toString());
+		} else
+			throw new IllegalArgumentException("Invalid value for createInstance: " + info.toString());
 	}
 
 	@Override

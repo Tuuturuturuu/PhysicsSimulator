@@ -37,11 +37,11 @@ public class Controller {
 
 			physicsSimulator.addBody(factoryBodies.createInstance(jaB.getJSONObject(i)));
 		}
-		for (int j = 0; j < jaL.length(); ++j) {//NO SE QUE String id METERLE A SETFORCELAWS
-
-			physicsSimulator.setForceLaws(null, factoryLaws.createInstance(jaL.getJSONObject(j)));
+		for (int j = 0; j < jaL.length(); ++j) {
+			
+			physicsSimulator.setForceLaws(jaL.getString(j), factoryLaws.createInstance(jaL.getJSONObject(j)));
 		}
-		for (int k = 0; k < jaG.length(); ++k) {//NO ESTOY SEGURA D Q ESTO ESTE BIEN
+		for (int k = 0; k < jaG.length(); ++k) {
 
 			physicsSimulator.addGroup(jaG.getString(k));
 		}

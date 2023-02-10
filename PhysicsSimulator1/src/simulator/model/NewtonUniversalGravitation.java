@@ -38,8 +38,7 @@ public class NewtonUniversalGravitation implements ForceLaws {
 
 					}
 					// NO HAY ELSE CON LA OPCIÓN DE (DIS== 0) PORQ SI LA DISTANCIA DIS (PJ-PI) ES
-					// CERO,
-					// NO SE SUMA NINGUNA FUERZA, POR LO TANTO NO SE HACE NADA
+					// CERO, NO SE SUMA NINGUNA FUERZA, POR LO TANTO NO SE HACE NADA
 				}
 
 				bi.addForce(fi);

@@ -10,7 +10,7 @@ import simulator.model.MovingTowardsFixedPoint;
 public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
 	public MovingTowardsFixedPointBuilder() {
-		
+
 		super("mtfp", "Moving towards a fixed point");
 	}
 
@@ -21,7 +21,7 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 		Vector2D c = new Vector2D(jac.getInt(0), jac.getInt(1));
 
 		Double g = data.getDouble("g");
-		
+
 		return new MovingTowardsFixedPoint(c, g);
 	}
 

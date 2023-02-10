@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import simulator.misc.Vector2D;
 
 public abstract class Body {
-	
 
 	protected String id;
 	protected String gid;
@@ -14,15 +13,14 @@ public abstract class Body {
 	protected Vector2D force;
 	protected Double mass;
 
-
 	public Body(String id, String gid, Vector2D v, Vector2D p, Double m) {
 
-		if ( id == null || gid == null || v == null || p == null || m == null || m < 0) 
+		if (id == null || gid == null || v == null || p == null || m == null || m < 0)
 			throw new IllegalArgumentException("Body received null or negative parameter");
-			
-		else if(id.trim().length() > 0 || gid.trim().length() > 0 )
+
+		else if (id.trim().length() > 0 || gid.trim().length() > 0)
 			throw new IllegalArgumentException("Body received invalid parameter");
-		
+
 		this.id = id;
 		this.gid = gid;
 		this.vel = v;
@@ -67,7 +65,7 @@ public abstract class Body {
 	void resetVelocity() {
 		this.vel = new Vector2D();
 	}
-	
+
 	abstract void advance(double dt);
 
 	public JSONObject getState() {
@@ -79,7 +77,7 @@ public abstract class Body {
 		jo.put("p", this.pos);
 		jo.put("v", this.vel);
 		jo.put("f", this.force);
-		
+
 		return jo;
 	}
 
@@ -88,6 +86,4 @@ public abstract class Body {
 
 	}
 
-	
-	
 }

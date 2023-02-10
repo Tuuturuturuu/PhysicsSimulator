@@ -10,8 +10,7 @@ public class BodiesGroup {
 	private ForceLaws laws;
 	private List<Body> bodyList;
 
-
-	public BodiesGroup(String id, ForceLaws laws) { // HAY QUE SEPARAR ESTE IF EN IF/ELSE PAR ATENER DOS EXCPECIONES DISTINTAS
+	public BodiesGroup(String id, ForceLaws laws) {
 
 		if (id == null || laws == null)
 			throw new IllegalArgumentException("Bodies Group received null parameter");
@@ -56,16 +55,16 @@ public class BodiesGroup {
 		}
 	}
 
-	public JSONObject getState() { 
+	public JSONObject getState() {
 		JSONObject jo1 = new JSONObject();
 		JSONArray ja = new JSONArray();
 
 		jo1.put("id", this.id);
 
 		for (Body bbi : bodyList) {
-			ja.put(bbi.getState());//TO STRING?
+			ja.put(bbi.getState());// TO STRING?
 		}
-		
+
 		jo1.put("bodies", ja);
 		return jo1;
 	}

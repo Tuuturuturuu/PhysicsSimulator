@@ -31,7 +31,7 @@ public class PhysicsSimulator {
 	public void advance() {
 
 		// HAY QUE PRIMERO APLICARLE UNA LEY?
-		for (Body bi : bodyList) {//CAMBIAR ESTO NO RECORRE LA BODYLIST SI NO LOS BODY GROUPS DEL MAPA
+		for (Body bi : bodyList) {// CAMBIAR ESTO NO RECORRE LA BODYLIST SI NO LOS BODY GROUPS DEL MAPA??
 			bi.advance(t); // TIEMPO REAL POR PASO
 		}
 		// INCREMENTA ELTIEMPO ACTUAL EN T SEGUNDOS
@@ -46,7 +46,8 @@ public class PhysicsSimulator {
 			throw new IllegalArgumentException("Bodies Group already has that id");
 		else {
 			map.put(id, bodiesGroup);
-			// ASI PONGO LOS ID DE LOS GRUOPOS EN ORDEN SEGUN SE CREAN?
+			// SE AÑADEN A LA LISTA LOS ID DE LOS GRUOPOS EN ORDEN SEGUN SE CREAN PARA Q
+			// ESTEN ORDENADOS
 			listOrderedGroupIds.add(id);
 		}
 	}
@@ -80,14 +81,13 @@ public class PhysicsSimulator {
 
 		for (String id : listOrderedGroupIds) {
 
-			ja.put(map.get(id).getState());//TO STRING O GETSATE?
+			ja.put(map.get(id).getState());// TO STRING O GETSATE?
 		}
-		
+
 		jo.put("groups", ja);
-		 
+
 		return jo;
 	}
-
 
 	public String toString() {
 		return getState().toString();
