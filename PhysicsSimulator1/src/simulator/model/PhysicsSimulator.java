@@ -26,11 +26,13 @@ public class PhysicsSimulator {
 		this.bodyList = new ArrayList<Body>();
 		this.tiempoActual = 0.0d;
 		this.map = new HashMap<String, BodiesGroup>();
+		this.listOrderedGroupIds = new ArrayList<String>();
 	}
 
 	public void advance() {
 
-		// HAY QUE PRIMERO APLICARLE UNA LEY?
+		this.fl.apply(bodyList);
+		
 		for (Body bi : bodyList) {// CAMBIAR ESTO NO RECORRE LA BODYLIST SI NO LOS BODY GROUPS DEL MAPA??
 			bi.advance(t); // TIEMPO REAL POR PASO
 		}
@@ -61,10 +63,18 @@ public class PhysicsSimulator {
 		else
 			bodyList.add(b);
 	}
+	
+	public void addBodyToGroup (Body b, String gid) {
+		if (!map.containsKey(gid))
+			throw new IllegalArgumentException("Bodies Group" + gid + " doesnt exist in the map");
+		else{
+			map.get(gid).addBody(b);
+		}
+	}
 
 	public void setForceLaws(String id, ForceLaws f) {
 
-		if (map.containsKey(id))
+		if (!map.containsKey(id))
 			throw new IllegalArgumentException("That Bodies Group id doesnt exist in the map");
 
 		else

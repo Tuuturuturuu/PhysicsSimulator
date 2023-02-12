@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -15,11 +16,12 @@ public class BodiesGroup {
 		if (id == null || laws == null)
 			throw new IllegalArgumentException("Bodies Group received null parameter");
 
-		else if (id.trim().length() > 0)
+		else if (!(id.trim().length() > 0))
 			throw new IllegalArgumentException("Bodies Gruop received invalid parameter");
 
 		this.id = id;
 		this.laws = laws;
+		this.bodyList = new ArrayList<Body>();
 	}
 
 	public String getId() {

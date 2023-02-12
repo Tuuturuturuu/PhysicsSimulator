@@ -8,6 +8,9 @@ import simulator.model.ForceLaws;
 import simulator.model.MovingTowardsFixedPoint;
 
 public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
+	
+	private static final Double g = 9.81d;
+	private static final Vector2D c = new Vector2D();
 
 	public MovingTowardsFixedPointBuilder() {
 
@@ -16,13 +19,17 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
 	@Override
 	protected ForceLaws createInstance(JSONObject data) {
-
-		JSONArray jac = data.getJSONArray("c");
-		Vector2D c = new Vector2D(jac.getInt(0), jac.getInt(1));
-
-		Double g = data.getDouble("g");
-
-		return new MovingTowardsFixedPoint(c, g);
+		
+		if(data.isEmpty())
+			return new MovingTowardsFixedPoint(c, g);
+		else {
+			JSONArray jac = data.getJSONArray("c");
+			Vector2D c = new Vector2D(jac.getInt(0), jac.getInt(1));
+	
+			Double g = data.getDouble("g");
+	
+			return new MovingTowardsFixedPoint(c, g);
+		}
 	}
 
 }

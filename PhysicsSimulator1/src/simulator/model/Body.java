@@ -18,7 +18,7 @@ public abstract class Body {
 		if (id == null || gid == null || v == null || p == null || m == null || m < 0)
 			throw new IllegalArgumentException("Body received null or negative parameter");
 
-		else if (id.trim().length() > 0 || gid.trim().length() > 0)
+		else if (!(id.trim().length() > 0) || !(gid.trim().length() > 0))
 			throw new IllegalArgumentException("Body received invalid parameter");
 
 		this.id = id;
@@ -54,7 +54,8 @@ public abstract class Body {
 	}
 
 	void addForce(Vector2D f) {
-		force.plus(f);
+		//?	NO SE SUMAN BIEN LAS FUERZAS?
+		this.force = this.force.plus(f);
 	}
 
 	void resetForce() {

@@ -37,7 +37,6 @@ public class Main {
 	private final static String _forceLawsDefaultValue = "nlug";
 
 	// some attributes to stores values corresponding to command-line parameters
-	//
 	private static Integer _steps = null;
 	private static Double _dtime = null;
 	private static String _inFile = null;
@@ -79,6 +78,8 @@ public class Main {
 			parseInFileOption(line);
 			parseDeltaTimeOption(line);
 			parseForceLawsOption(line);
+			parseOutFileOption(line);
+			parseStepsOption(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -97,6 +98,7 @@ public class Main {
 		}
 
 	}
+
 
 	private static Options buildOptions() {
 		Options cmdLineOptions = new Options();
@@ -171,6 +173,25 @@ public class Main {
 		} catch (Exception e) {
 			throw new ParseException("Invalid delta-time value: " + dt);
 		}
+	}
+	
+	private static void parseStepsOption(CommandLine line) throws ParseException {
+		String s = line.getOptionValue("s", _stepsDefaultValue.toString());
+		try {
+			_steps = Integer.parseInt(s);
+			assert (_steps > 0);
+		} catch (Exception e) {
+			throw new ParseException("Invalid steps value: " + s);
+		}
+		
+	}
+
+	private static void parseOutFileOption(CommandLine line) throws ParseException {
+		_outFile = line.getOptionValue("o");
+		if (_outFile == null) {
+			throw new ParseException("In batch mode an output file of bodies is required");
+		}
+		
 	}
 
 	private static JSONObject parseWRTFactory(String v, Factory<?> factory) {
