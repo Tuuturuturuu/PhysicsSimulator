@@ -12,7 +12,7 @@ public class PhysicsSimulator {
 
 	private Double t;
 	private ForceLaws fl;
-	private List<Body> bodyList;
+
 	private Double tiempoActual;
 	private Map<String, BodiesGroup> map;
 	private List<String> listOrderedGroupIds;
@@ -23,24 +23,22 @@ public class PhysicsSimulator {
 
 		this.fl = fl;
 		this.t = t;
-		this.bodyList = new ArrayList<Body>();
 		this.tiempoActual = 0.0d;
 		this.map = new HashMap<String, BodiesGroup>();
 		this.listOrderedGroupIds = new ArrayList<String>();
 	}
 
 	public void advance() {
-
-		this.fl.apply(bodyList);
 		
-		for (Body bi : bodyList) {// CAMBIAR ESTO NO RECORRE LA BODYLIST SI NO LOS BODY GROUPS DEL MAPA??
-			bi.advance(t); // TIEMPO REAL POR PASO
+		for (BodiesGroup bg : map.values()) {
+			bg.advance(t); // TIEMPO REAL POR PASO
 		}
 		// INCREMENTA ELTIEMPO ACTUAL EN T SEGUNDOS
 		this.tiempoActual += t;
 	}
 
 	public void addGroup(String id) {
+
 
 		BodiesGroup bodiesGroup = new BodiesGroup(id, this.fl);
 
@@ -53,23 +51,16 @@ public class PhysicsSimulator {
 			listOrderedGroupIds.add(id);
 		}
 	}
-
+	
 	public void addBody(Body b) {
 		if (b == null)
 			throw new IllegalArgumentException("Illegal parameter: Body received is null");
 
-		if (bodyList.contains(b))
-			throw new IllegalArgumentException("Illegal parameter: Body is already in Bodies Group");
+		if (!map.containsKey(b.getgId()))
+			throw new IllegalArgumentException("Illegal parameter: yataBodies Group doesnt exist in map");
 		else
-			bodyList.add(b);
-	}
-	
-	public void addBodyToGroup (Body b, String gid) {
-		if (!map.containsKey(gid))
-			throw new IllegalArgumentException("Bodies Group" + gid + " doesnt exist in the map");
-		else{
-			map.get(gid).addBody(b);
-		}
+			map.get(b.getgId()).addBody(b);
+		
 	}
 
 	public void setForceLaws(String id, ForceLaws f) {

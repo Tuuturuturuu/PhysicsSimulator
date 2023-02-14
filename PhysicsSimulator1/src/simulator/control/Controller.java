@@ -29,7 +29,7 @@ public class Controller {
 		JSONObject jsonInput = new JSONObject(new JSONTokener(in));
 		
 		JSONArray jaB = jsonInput.getJSONArray("bodies");
-		JSONObject joL = jsonInput.getJSONArray("laws").getJSONObject(0);
+		JSONArray jaL = jsonInput.getJSONArray("laws");
 		JSONArray jaG = jsonInput.getJSONArray("groups");
 		
 		//ADD GROUPS		
@@ -42,13 +42,17 @@ public class Controller {
 			Body b = factoryBodies.createInstance(jaB.getJSONObject(i));
 
 			physicsSimulator.addBody(b);
-			physicsSimulator.addBodyToGroup(b, b.getgId());
 			
 		}
 		
 		//ADD FORCE LAW
-		physicsSimulator.setForceLaws(joL.getString("id"), factoryLaws.createInstance(joL.getJSONObject("laws")));
+		for (int j = 0; j < jaL.length(); ++j) {
+			
+			JSONObject joL = jaL.getJSONObject(j);
 
+			physicsSimulator.setForceLaws(joL.getString("id"), factoryLaws.createInstance(joL.getJSONObject("laws")));
+			
+		}
 	}
 
 	public void run(int n, OutputStream out) {

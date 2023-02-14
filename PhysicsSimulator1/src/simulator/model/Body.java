@@ -54,7 +54,6 @@ public abstract class Body {
 	}
 
 	void addForce(Vector2D f) {
-		//?	NO SE SUMAN BIEN LAS FUERZAS?
 		this.force = this.force.plus(f);
 	}
 
