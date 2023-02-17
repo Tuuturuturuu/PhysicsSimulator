@@ -22,6 +22,20 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 		
 		if(data.isEmpty())
 			return new MovingTowardsFixedPoint(c, g);
+		
+		else if( !data.has("c") ) {
+			
+			
+			Double g = data.getDouble("g");
+			return new MovingTowardsFixedPoint(c, g);
+		}
+			
+		else if(!data.has("g")) {
+			JSONArray jac = data.getJSONArray("c");
+			Vector2D c = new Vector2D(jac.getInt(0), jac.getInt(1));
+			return new MovingTowardsFixedPoint(c, g);
+
+		}
 		else {
 			JSONArray jac = data.getJSONArray("c");
 			Vector2D c = new Vector2D(jac.getInt(0), jac.getInt(1));

@@ -13,9 +13,9 @@ public abstract class Body {
 	protected Vector2D force;
 	protected Double mass;
 
-	public Body(String id, String gid, Vector2D v, Vector2D p, Double m) {
+	public Body(String id, String gid, Vector2D p, Vector2D v, Double m) {
 
-		if (id == null || gid == null || v == null || p == null || m == null || m < 0)
+		if (id == null || gid == null || v == null || p == null || m == null || m <= 0)
 			throw new IllegalArgumentException("Body received null or negative parameter");
 
 		else if (!(id.trim().length() > 0) || !(gid.trim().length() > 0))
@@ -71,14 +71,20 @@ public abstract class Body {
 	public JSONObject getState() {
 
 		JSONObject jo = new JSONObject();
+		
 
 		jo.put("id", this.id);
+		jo.put("p", this.pos.asJSONArray());
+		jo.put("v", this.vel.asJSONArray());
+		jo.put("f", this.force.asJSONArray());
 		jo.put("m", this.mass);
-		jo.put("p", this.pos);
-		jo.put("v", this.vel);
-		jo.put("f", this.force);
 
 		return jo;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return this.id.compareTo(((Body) o).getId()) == 0 ? true : false; 
 	}
 
 	public String toString() {

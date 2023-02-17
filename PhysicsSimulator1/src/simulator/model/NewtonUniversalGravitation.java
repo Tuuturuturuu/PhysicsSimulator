@@ -10,8 +10,8 @@ public class NewtonUniversalGravitation implements ForceLaws {
 	// NO ES CTE, SE PASA COMO PARAMETRO EN EL CONTRUCTOR PARA LAS GS DE DISTINTOS
 	// PLANETAS
 
-	public NewtonUniversalGravitation(Double g) {
-		if (g < 0) {
+	public NewtonUniversalGravitation(double g) {
+		if (g <= 0) {
 			throw new IllegalArgumentException("Parameter received is negative");
 		}
 		this.g = g;

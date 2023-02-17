@@ -245,7 +245,7 @@ public class Main {
 	private static void startBatchMode() throws Exception {
 
 		ForceLaws fl = _forceLawsFactory.createInstance(_forceLawsInfo);
-		PhysicsSimulator pSimulator = new PhysicsSimulator(_dtime, fl);
+		PhysicsSimulator pSimulator = new PhysicsSimulator(fl, _dtime);
 		Controller controller = new Controller(pSimulator, _bodyFactory, _forceLawsFactory);
 
 		InputStream input = new FileInputStream(_inFile);

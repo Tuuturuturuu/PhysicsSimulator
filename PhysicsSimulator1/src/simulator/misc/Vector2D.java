@@ -130,9 +130,9 @@ public class Vector2D {
 		if (getClass() != obj.getClass())
 			return false;
 		Vector2D other = (Vector2D) obj;
-		if (Double.doubleToLongBits(_x) != Double.doubleToLongBits(other._x))
+		if (Math.abs(_x - other._x)>0.1)
 			return false;
-		if (Double.doubleToLongBits(_y) != Double.doubleToLongBits(other._y))
+		if (Math.abs(_y - other._y)>0.1)
 			return false;
 		return true;
 	}

@@ -8,9 +8,9 @@ public class MovingTowardsFixedPoint implements ForceLaws {
 	private Vector2D c;
 	private Double g;
 
-	public MovingTowardsFixedPoint(Vector2D c, Double g) {
+	public MovingTowardsFixedPoint(Vector2D c, double g) {
 
-		if (c == null || g < 0) {
+		if (c == null || g <= 0) {
 			throw new IllegalArgumentException("Received invalid parameter");
 		}
 		this.c = c;
@@ -21,10 +21,9 @@ public class MovingTowardsFixedPoint implements ForceLaws {
 
 		for (Body bi : bodies) {
 
-			Vector2D di = new Vector2D();
+			Vector2D di = c.minus(bi.getPosition()).direction();
 			Vector2D fi = new Vector2D();
 
-			di = c.minus(bi.getPosition());
 
 			fi = di.scale(bi.getMass() * g);
 

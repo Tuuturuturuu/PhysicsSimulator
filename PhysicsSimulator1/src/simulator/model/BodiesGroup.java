@@ -47,14 +47,17 @@ public class BodiesGroup {
 	}
 
 	void advance(double dt) { // DT = TIEMPO REAL POR PASO
-		if (dt < 0)
+		if (dt <= 0)
 			throw new IllegalArgumentException("Illegal parameter: Time received is negative");
 
-		for (Body bi : bodyList) {
+		for (Body bi : bodyList) 
 			bi.resetForce();
-			laws.apply(bodyList);
+			
+		laws.apply(bodyList);
+		
+		for(Body bi: bodyList)
 			bi.advance(dt);
-		}
+		
 	}
 
 	public JSONObject getState() {

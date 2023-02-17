@@ -4,8 +4,8 @@ import simulator.misc.Vector2D;
 
 public class MovingBody extends Body {
 
-	public MovingBody(String id, String gid, Vector2D v, Vector2D p, Double m) {
-		super(id, gid, v, p, m);
+	public MovingBody(String id, String gid, Vector2D p, Vector2D v, Double m) {	
+		super(id, gid, p, v, m);
 	}
 
 	@Override
@@ -19,7 +19,7 @@ public class MovingBody extends Body {
 			ac = force.scale(1.0d / mass);
 
 			// CAMBIA LA POSICION
-			pos = pos.plus(vel.scale(dt)).plus(ac.scale(1.0d / 2.0d).scale(dt * dt));
+			pos = pos.plus(vel.scale(dt).plus(ac.scale(0.5*dt*dt)));
 
 			// CAMBIA LA VELOCIDAD
 			vel = vel.plus(ac.scale(dt));
