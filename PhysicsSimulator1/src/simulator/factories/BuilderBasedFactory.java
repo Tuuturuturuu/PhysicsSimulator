@@ -46,20 +46,21 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 			if (_builders.containsKey(info.getString("type"))) {
 				
 				if(!info.has("data")) 
-					instance = _builders.get(info.getString("type")).createInstance(null);
-	
-				instance = _builders.get(info.getString("type")).createInstance(info.getJSONObject("data"));
-	
+					instance = _builders.get(info.getString("type")).createInstance(new JSONObject());
+				
+				else 	
+					instance = _builders.get(info.getString("type")).createInstance(info.getJSONObject("data"));
+				
 				if (instance == null) 
 					throw new IllegalArgumentException("Invalid value for instance: null");
 				else 
 					return instance;
-			}
-				
-				
+		}	
+					
 			else
 				throw new IllegalArgumentException("Invalid value for createInstance: " + info.toString());
 		}
+		
 	}
 
 	@Override
