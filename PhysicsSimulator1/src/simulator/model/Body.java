@@ -71,7 +71,6 @@ public abstract class Body {
 	public JSONObject getState() {
 
 		JSONObject jo = new JSONObject();
-		
 
 		jo.put("id", this.id);
 		jo.put("p", this.pos.asJSONArray());
@@ -81,10 +80,10 @@ public abstract class Body {
 
 		return jo;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		return this.id.compareTo(((Body) o).getId()) == 0 ? true : false; 
+		return this.id.compareTo(((Body) o).getId()) == 0 ? true : false;
 	}
 
 	public String toString() {

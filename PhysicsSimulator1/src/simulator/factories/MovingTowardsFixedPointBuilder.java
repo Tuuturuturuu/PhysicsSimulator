@@ -8,9 +8,9 @@ import simulator.model.ForceLaws;
 import simulator.model.MovingTowardsFixedPoint;
 
 public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
-	
-	private static final Double g = 9.81d;
-	private static final Vector2D c = new Vector2D();
+
+	private static final Double _g = 9.81d;
+	private static final Vector2D _c = new Vector2D();
 
 	public MovingTowardsFixedPointBuilder() {
 
@@ -19,31 +19,28 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
 	@Override
 	protected ForceLaws createInstance(JSONObject data) {
-		
-		if(data.isEmpty())
-			return new MovingTowardsFixedPoint(c, g);
-		
-		else if( !data.has("c") ) {
-			
-			
-			Double g = data.getDouble("g");
-			return new MovingTowardsFixedPoint(c, g);
-		}
-			
-		else if(!data.has("g")) {
-			JSONArray jac = data.getJSONArray("c");
-			Vector2D c = new Vector2D(jac.getInt(0), jac.getInt(1));
-			return new MovingTowardsFixedPoint(c, g);
+		// System.out.println(data);
 
-		}
-		else {
+		if (data.isEmpty())
+			return new MovingTowardsFixedPoint(_c, _g);
+
+		Double g;
+
+		if (data.has("g"))
+			g = data.getDouble("g");
+		else
+			g = _g;
+
+		Vector2D c;
+
+		if (data.has("c")) {
 			JSONArray jac = data.getJSONArray("c");
-			Vector2D c = new Vector2D(jac.getInt(0), jac.getInt(1));
-	
-			Double g = data.getDouble("g");
-	
-			return new MovingTowardsFixedPoint(c, g);
-		}
+			c = new Vector2D(jac.getDouble(0), jac.getDouble(1));
+
+		} else
+			c = _c;
+
+		return new MovingTowardsFixedPoint(c, g);
 	}
 
 }

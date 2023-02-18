@@ -27,31 +27,43 @@ public class Controller {
 	public void loadData(InputStream in) {
 
 		JSONObject jsonInput = new JSONObject(new JSONTokener(in));
-		
-		JSONArray jaB = jsonInput.getJSONArray("bodies");
-		JSONArray jaL = jsonInput.getJSONArray("laws");
-		JSONArray jaG = jsonInput.getJSONArray("groups");
-		
-		//ADD GROUPS		
-		for (int k = 0; k < jaG.length(); ++k) {
 
-			physicsSimulator.addGroup(jaG.getString(k));
-		}
-		//ADD BODIES
-		for (int i = 0; i < jaB.length(); ++i) {
-			Body b = factoryBodies.createInstance(jaB.getJSONObject(i));
+		if (!jsonInput.has("bodies") || !jsonInput.has("groups"))
+			throw new IllegalArgumentException(" There is data missing (bodies, groups or laws)");
 
-			physicsSimulator.addBody(b);
-			
-		}
-		
-		//ADD FORCE LAW
-		for (int j = 0; j < jaL.length(); ++j) {
-			
-			JSONObject joL = jaL.getJSONObject(j);
+		else {
 
-			physicsSimulator.setForceLaws(joL.getString("id"), factoryLaws.createInstance(joL.getJSONObject("laws")));
-			
+			JSONArray jaG = jsonInput.getJSONArray("groups");
+
+			// ADD GROUPS
+			for (int k = 0; k < jaG.length(); ++k) {
+
+				physicsSimulator.addGroup(jaG.getString(k));
+			}
+
+			JSONArray jaB = jsonInput.getJSONArray("bodies");
+
+			// ADD BODIES
+			for (int i = 0; i < jaB.length(); ++i) {
+				Body b = factoryBodies.createInstance(jaB.getJSONObject(i));
+
+				physicsSimulator.addBody(b);
+
+			}
+
+			if (jsonInput.has("laws")) {
+
+				JSONArray jaL = jsonInput.getJSONArray("laws");
+				// ADD FORCE LAW
+				for (int j = 0; j < jaL.length(); ++j) {
+
+					JSONObject joL = jaL.getJSONObject(j);
+
+					physicsSimulator.setForceLaws(joL.getString("id"),
+							factoryLaws.createInstance(joL.getJSONObject("laws")));
+
+				}
+			}
 		}
 	}
 

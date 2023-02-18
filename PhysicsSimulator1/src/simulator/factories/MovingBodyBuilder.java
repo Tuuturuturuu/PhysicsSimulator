@@ -17,10 +17,10 @@ public class MovingBodyBuilder extends Builder<Body> {
 
 	@Override
 	protected Body createInstance(JSONObject data) {
-		
-		if(!data.has("id") || !data.has("gid") || !data.has("p") || !data.has("m") || !data.has("v"))
+
+		if (!data.has("id") || !data.has("gid") || !data.has("p") || !data.has("m") || !data.has("v"))
 			throw new IllegalArgumentException("Missing parameter in the creation of the body");
-		
+
 		String id = data.getString("id");
 		String gid = data.getString("gid");
 
@@ -31,8 +31,9 @@ public class MovingBodyBuilder extends Builder<Body> {
 		Vector2D p = new Vector2D(jap.getDouble(0), jap.getDouble(1));
 
 		Double m = data.getDouble("m");
-		
-		if(jap.length()!= 2 || jav.length()!= 2) throw new IllegalArgumentException("Vector is not 2D");
+
+		if (jap.length() != 2 || jav.length() != 2)
+			throw new IllegalArgumentException("Vector is not 2D");
 
 		return new MovingBody(id, gid, p, v, m);
 	}

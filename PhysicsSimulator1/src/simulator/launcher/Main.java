@@ -99,7 +99,6 @@ public class Main {
 
 	}
 
-
 	private static Options buildOptions() {
 		Options cmdLineOptions = new Options();
 
@@ -174,7 +173,7 @@ public class Main {
 			throw new ParseException("Invalid delta-time value: " + dt);
 		}
 	}
-	
+
 	private static void parseStepsOption(CommandLine line) throws ParseException {
 		String s = line.getOptionValue("s", _stepsDefaultValue.toString());
 		try {
@@ -183,7 +182,7 @@ public class Main {
 		} catch (Exception e) {
 			throw new ParseException("Invalid steps value: " + s);
 		}
-		
+
 	}
 
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
@@ -191,7 +190,7 @@ public class Main {
 		if (_outFile == null) {
 			throw new ParseException("In batch mode an output file of bodies is required");
 		}
-		
+
 	}
 
 	private static JSONObject parseWRTFactory(String v, Factory<?> factory) {

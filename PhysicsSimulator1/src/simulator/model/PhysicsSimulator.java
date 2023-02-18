@@ -29,7 +29,7 @@ public class PhysicsSimulator {
 	}
 
 	public void advance() {
-		
+
 		for (BodiesGroup bg : map.values()) {
 			bg.advance(t); // TIEMPO REAL POR PASO
 		}
@@ -39,7 +39,6 @@ public class PhysicsSimulator {
 
 	public void addGroup(String id) {
 
-
 		BodiesGroup bodiesGroup = new BodiesGroup(id, this.fl);
 
 		if (map.containsKey(id))
@@ -47,11 +46,11 @@ public class PhysicsSimulator {
 		else {
 			map.put(id, bodiesGroup);
 			// SE AÑADEN A LA LISTA LOS ID DE LOS GRUOPOS EN ORDEN SEGUN SE CREAN PARA Q
-			// ESTEN ORDENADOS
+			// ESTEN ORDENADOS POR ORDEN DE INSERCION
 			listOrderedGroupIds.add(id);
 		}
 	}
-	
+
 	public void addBody(Body b) {
 		if (b == null)
 			throw new IllegalArgumentException("Illegal parameter: Body received is null");
@@ -60,7 +59,7 @@ public class PhysicsSimulator {
 			throw new IllegalArgumentException("Illegal parameter: yataBodies Group doesnt exist in map");
 		else
 			map.get(b.getgId()).addBody(b);
-		
+
 	}
 
 	public void setForceLaws(String id, ForceLaws f) {
@@ -82,7 +81,7 @@ public class PhysicsSimulator {
 
 		for (String id : listOrderedGroupIds) {
 
-			ja.put(map.get(id).getState());// TO STRING O GETSATE?
+			ja.put(map.get(id).getState());
 		}
 
 		jo.put("groups", ja);

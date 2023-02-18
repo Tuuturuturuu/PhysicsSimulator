@@ -16,10 +16,9 @@ public class StationaryBodyBuilder extends Builder<Body> {
 
 	@Override
 	protected Body createInstance(JSONObject data) {
-		
-		if(!data.has("id") || !data.has("gid") || !data.has("p") || !data.has("m"))
+
+		if (!data.has("id") || !data.has("gid") || !data.has("p") || !data.has("m"))
 			throw new IllegalArgumentException("Missing parameter in the creation of the body");
-		
 
 		String id = data.getString("id");
 		String gid = data.getString("gid");
@@ -28,9 +27,10 @@ public class StationaryBodyBuilder extends Builder<Body> {
 		Vector2D p = new Vector2D(jap.getDouble(0), jap.getDouble(1));
 
 		Double m = data.getDouble("m");
-		
-		if(jap.length()!= 2) throw new IllegalArgumentException("Vector is not 2D");
-		
+
+		if (jap.length() != 2)
+			throw new IllegalArgumentException("Vector is not 2D");
+
 		return new StationaryBody(id, gid, p, m);
 
 	}

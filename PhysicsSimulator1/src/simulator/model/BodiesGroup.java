@@ -50,14 +50,14 @@ public class BodiesGroup {
 		if (dt <= 0)
 			throw new IllegalArgumentException("Illegal parameter: Time received is negative");
 
-		for (Body bi : bodyList) 
+		for (Body bi : bodyList)
 			bi.resetForce();
-			
+
 		laws.apply(bodyList);
-		
-		for(Body bi: bodyList)
+
+		for (Body bi : bodyList)
 			bi.advance(dt);
-		
+
 	}
 
 	public JSONObject getState() {
@@ -67,7 +67,7 @@ public class BodiesGroup {
 		jo1.put("id", this.id);
 
 		for (Body bbi : bodyList) {
-			ja.put(bbi.getState());// TO STRING?
+			ja.put(bbi.getState());
 		}
 
 		jo1.put("bodies", ja);

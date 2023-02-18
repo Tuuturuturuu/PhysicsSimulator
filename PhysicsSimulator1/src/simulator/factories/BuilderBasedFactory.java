@@ -39,28 +39,28 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 		if (info == null) {
 			throw new IllegalArgumentException("Invalid value for createInstance: null");
 		}
-		if(!info.has("type"))
-				throw new IllegalArgumentException("Missing object type");
+		if (!info.has("type"))
+			throw new IllegalArgumentException("Missing object type");
 		else {
-				
+
 			if (_builders.containsKey(info.getString("type"))) {
-				
-				if(!info.has("data")) 
+
+				if (!info.has("data"))
 					instance = _builders.get(info.getString("type")).createInstance(new JSONObject());
-				
-				else 	
+
+				else
 					instance = _builders.get(info.getString("type")).createInstance(info.getJSONObject("data"));
-				
-				if (instance == null) 
+
+				if (instance == null)
 					throw new IllegalArgumentException("Invalid value for instance: null");
-				else 
+				else
 					return instance;
-		}	
-					
+			}
+
 			else
 				throw new IllegalArgumentException("Invalid value for createInstance: " + info.toString());
 		}
-		
+
 	}
 
 	@Override

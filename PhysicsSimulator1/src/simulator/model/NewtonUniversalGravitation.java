@@ -27,8 +27,7 @@ public class NewtonUniversalGravitation implements ForceLaws {
 
 				for (Body bj : bodies) {
 
-					// ESTO ES |pi-pj|, SI LOS VALORES DAN MAL ELIMINAR DIS Y METERLO EN LA FORMULA
-					// DE FI
+					// DIS = |Pi-PJ|
 					Double dis = bj.getPosition().distanceTo(bi.getPosition());
 
 					if (dis > 0) {
@@ -37,7 +36,7 @@ public class NewtonUniversalGravitation implements ForceLaws {
 								.scale((g * bi.getMass() * bj.getMass() / (dis * (dis)))));
 
 					}
-					// NO HAY ELSE CON LA OPCIÓN DE (DIS== 0) PORQ SI LA DISTANCIA DIS (PJ-PI) ES
+					// NO HAY ELSE CON LA OPCIÓN DE (DIS == 0) PORQ SI LA DISTANCIA DIS (PJ-PI) ES
 					// CERO, NO SE SUMA NINGUNA FUERZA, POR LO TANTO NO SE HACE NADA
 				}
 
