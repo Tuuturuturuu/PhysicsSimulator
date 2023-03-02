@@ -66,10 +66,8 @@ public class PhysicsSimulator {
 
 		if (!map.containsKey(id))
 			throw new IllegalArgumentException("That Bodies Group id doesnt exist in the map");
-
 		else
 			map.get(id).setForceLaws(f);
-
 	}
 
 	public JSONObject getState() {
