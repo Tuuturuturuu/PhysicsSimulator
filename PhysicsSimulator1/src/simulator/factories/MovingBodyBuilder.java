@@ -8,7 +8,7 @@ import simulator.model.Body;
 import simulator.model.MovingBody;
 
 public class MovingBodyBuilder extends Builder<Body> {
-	
+
 	public MovingBodyBuilder() {
 
 		super("mv_body", "Moving body");
@@ -34,7 +34,8 @@ public class MovingBodyBuilder extends Builder<Body> {
 
 		if (jap.length() != 2 || jav.length() != 2)
 			throw new IllegalArgumentException("Vector is not 2D");
-		
+
 		return new MovingBody(id, gid, p, v, m);
-	}	
+	}
+
 }

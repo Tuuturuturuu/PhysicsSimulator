@@ -32,7 +32,8 @@ public class NewtonUniversalGravitation implements ForceLaws {
 
 					if (dis > 0) {
 
-						fi = fi.plus(bj.getPosition().minus(bi.getPosition()).direction().scale((g * bi.getMass() * bj.getMass() / (dis * (dis)))));
+						fi = fi.plus(bj.getPosition().minus(bi.getPosition()).direction()
+								.scale((g * bi.getMass() * bj.getMass() / (dis * (dis)))));
 
 					}
 					// NO HAY ELSE CON LA OPCIÓN DE (DIS == 0) PORQ SI LA DISTANCIA DIS (PJ-PI) ES

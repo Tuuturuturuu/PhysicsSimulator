@@ -102,38 +102,35 @@ public class Main {
 	private static Options buildOptions() {
 		Options cmdLineOptions = new Options();
 
-		// help 
+		// help
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message.").build());
 
-		// input file 
+		// input file
 		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("Bodies JSON input file.").build());
 
-		// delta-time 
+		// delta-time
 		cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg()
 				.desc("A double representing actual time, in seconds, per simulation step. Default value: "
 						+ _dtimeDefaultValue + ".")
 				.build());
 
-		// force laws 
+		// force laws
 		cmdLineOptions.addOption(Option.builder("fl").longOpt("force-laws").hasArg()
 				.desc("Force laws to be used in the simulator. Possible values: "
 						+ factoryPossibleValues(_forceLawsFactory) + ". Default value: '" + _forceLawsDefaultValue
 						+ "'.")
 				.build());
-		
-		// output file 
-		// si no te introducen la opcion -o en los comandos, es decir, no te especifican donde guardar el 
-		//json generado de salida, el json que se genera de la salida se debe imprimir por consola 
+		// output file
 		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg()
 				.desc("Output file, where output is written. Default\n" + "value: the standard output.").build());
-		
-		// steps 
+
+		// steps
 		cmdLineOptions.addOption(Option.builder("s").longOpt("steps").hasArg()
 				.desc(" An integer representing the number of simulation\n" + "steps. Default value: 150.").build());
 
 		return cmdLineOptions;
 	}
-	
+
 	public static String factoryPossibleValues(Factory<?> factory) {
 		String s = "";
 		if (factory != null) {
@@ -151,8 +148,7 @@ public class Main {
 		}
 		return s;
 	}
-	
-		
+
 	private static void parseHelpOption(CommandLine line, Options cmdLineOptions) {
 		if (line.hasOption("h")) {
 			HelpFormatter formatter = new HelpFormatter();
@@ -191,7 +187,6 @@ public class Main {
 
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
 		_outFile = line.getOptionValue("o");
-		
 		if (_outFile == null) {
 			throw new ParseException("In batch mode an output file of bodies is required");
 		}
