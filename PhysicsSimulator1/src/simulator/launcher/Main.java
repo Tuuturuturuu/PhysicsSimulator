@@ -187,9 +187,7 @@ public class Main {
 
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
 		_outFile = line.getOptionValue("o");
-		if (_outFile == null) {
-			throw new ParseException("In batch mode an output file of bodies is required");
-		}
+		
 
 	}
 
@@ -248,7 +246,12 @@ public class Main {
 		Controller controller = new Controller(pSimulator, _bodyFactory, _forceLawsFactory);
 
 		InputStream input = new FileInputStream(_inFile);
-		OutputStream output = new FileOutputStream(_outFile);
+		OutputStream output;
+		if(_outFile == null) 
+			output = System.out;		
+		else
+			output = new FileOutputStream(_outFile);
+		
 
 		controller.loadData(input);
 		controller.run(_steps, output);

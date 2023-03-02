@@ -19,7 +19,6 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
 	@Override
 	protected ForceLaws createInstance(JSONObject data) {
-		// System.out.println(data);
 
 		if (data.isEmpty())
 			return new MovingTowardsFixedPoint(_c, _g);

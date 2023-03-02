@@ -1,0 +1,22 @@
+INDEX VERSION 1.131+C:\Users\lucia\OneDrive\Escritorio\PhysicsSimulator\.metadata\.plugins\org.eclipse.jdt.core
+3757769865.index
+3593123540.index
+2639511522.index
+1806165246.index
+214042201.index
+62592300.index
+1950443884.index
+2006698849.index
+962710758.index
+1857763760.index
+3693552441.index
+2749494073.index
+3088402070.index
+3805843000.index
+2143017236.index
+1838504192.index
+435497130.index
+810280680.index
+1301803821.index
+1056584440.index
+1865797976.index
