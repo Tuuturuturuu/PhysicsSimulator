@@ -8,6 +8,7 @@ import simulator.model.NoForce;
 public class NoForceBuilder extends Builder<ForceLaws> {
 
 	public NoForceBuilder() {
+
 		super("nf", "No  force");
 
 	}

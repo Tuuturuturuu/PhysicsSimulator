@@ -187,8 +187,6 @@ public class Main {
 
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
 		_outFile = line.getOptionValue("o");
-		
-
 	}
 
 	private static JSONObject parseWRTFactory(String v, Factory<?> factory) {
@@ -247,11 +245,12 @@ public class Main {
 
 		InputStream input = new FileInputStream(_inFile);
 		OutputStream output;
-		if(_outFile == null) 
-			output = System.out;		
+
+		if (_outFile == null)
+			output = System.out;
+
 		else
 			output = new FileOutputStream(_outFile);
-		
 
 		controller.loadData(input);
 		controller.run(_steps, output);

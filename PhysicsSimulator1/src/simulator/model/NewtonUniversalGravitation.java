@@ -36,7 +36,7 @@ public class NewtonUniversalGravitation implements ForceLaws {
 								.scale((g * bi.getMass() * bj.getMass() / (dis * (dis)))));
 
 					}
-					// NO HAY ELSE CON LA OPCIÓN DE (DIS == 0) PORQUE SI LA DISTANCIA DIS (PJ-PI) ES
+					// NO HAY ELSE CON LA OPCIÓN DE (DIS == 0) PORQ SI LA DISTANCIA DIS (PJ-PI) ES
 					// CERO, NO SE SUMA NINGUNA FUERZA, POR LO TANTO NO SE HACE NADA
 				}
 

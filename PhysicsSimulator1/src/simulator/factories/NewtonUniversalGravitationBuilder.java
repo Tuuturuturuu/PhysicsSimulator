@@ -10,6 +10,7 @@ public class NewtonUniversalGravitationBuilder extends Builder<ForceLaws> {
 	private static final Double G = 6.67E-11d;
 
 	public NewtonUniversalGravitationBuilder() {
+
 		super("nlug", "Newtons law of universal gravitation");
 	}
 

@@ -45,7 +45,7 @@ public class PhysicsSimulator {
 			throw new IllegalArgumentException("Bodies Group already has that id");
 		else {
 			map.put(id, bodiesGroup);
-			// SE AÑADEN A LA LISTA LOS ID DE LOS GRUPOS EN ORDEN SEGUN SE CREAN PARA QUE
+			// SE AÑADEN A LA LISTA LOS ID DE LOS GRUOPOS EN ORDEN SEGUN SE CREAN PARA Q
 			// ESTEN ORDENADOS POR ORDEN DE INSERCION
 			listOrderedGroupIds.add(id);
 		}
@@ -56,7 +56,7 @@ public class PhysicsSimulator {
 			throw new IllegalArgumentException("Illegal parameter: Body received is null");
 
 		if (!map.containsKey(b.getgId()))
-			throw new IllegalArgumentException("Illegal parameter: dataBodies Group doesnt exist in map");
+			throw new IllegalArgumentException("Illegal parameter: yataBodies Group doesnt exist in map");
 		else
 			map.get(b.getgId()).addBody(b);
 
