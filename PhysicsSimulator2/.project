@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>PhysicsSimulatorTP</name>
+	<name>PhysicsSimulator2</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>tests</name>
-			<type>2</type>
-			<location>C:/Users/marga/Downloads/tests</location>
-		</link>
-	</linkedResources>
 </projectDescription>
