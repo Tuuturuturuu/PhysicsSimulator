@@ -8,5 +8,10 @@ public class NoForce implements ForceLaws{
 	public void apply(List<Body> bodies) {
 		
 	}
-
+	
+	public String toString() {
+		return "No Force";
+	}
 }
+
+

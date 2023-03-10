@@ -17,5 +17,11 @@ public class NoForceBuilder extends Builder<ForceLaws> {
 	protected ForceLaws createInstance(JSONObject data) {
 		return new NoForce();
 	}
-
+	
+	public JSONObject getInfo() {
+			
+			JSONObject data = new JSONObject();//DEJAS EL JSONOBJECT DATA VACIO?
+			
+			return data;
+	}
 }

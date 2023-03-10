@@ -50,4 +50,10 @@ public class NewtonUniversalGravitation implements ForceLaws {
 			}
 		}
 	}
+	
+	//ME PARECE QUE LA G Q HAY QUE DEVOLVER ES ESTA PERO NO ESTOY MUY SEGURA -> 
+	//CAMBIAR EL NOMBRE SI ES ESTA A _G
+	public String toString() {
+		return "Newton’s Universal Gravitation with G=" + g;
+	}
 }
