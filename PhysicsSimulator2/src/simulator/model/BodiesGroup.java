@@ -36,7 +36,7 @@ public class BodiesGroup implements Iterable<Body>{
 	
 	public String getForceLawsInfo(){
 		//COMO QUE HAY QUE RECORRER AQUI EL GRUPO DE BODIESGROUP G? PARA HACER EL QUE?
-		//VA AQUI??
+		//VA AQUI?? TODO
 //		for (Body b : g) { 
 //			// do something with b
 //		}

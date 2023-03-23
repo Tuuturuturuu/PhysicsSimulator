@@ -41,13 +41,13 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
 // _forceLawsInfo se usará para establecer la información en la tabla
-		_forceLawsInfo = ctrl.getForceLawsInfo();
+		//_forceLawsInfo = ctrl.getForceLawsInfo();
 // TODO crear un JTable que use _dataTableModel, y añadirla al panel
 		_dataTableModel = new DefaultTableModel() {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-// TODO hacer editable solo la columna 1
-			}
+			//@Override
+//			public boolean isCellEditable(int row, int column) {
+//// TODO hacer editable solo la columna 1
+//			}
 		};
 		_dataTableModel.setColumnIdentifiers(_headers);
 		_lawsModel = new DefaultComboBoxModel<>();
@@ -64,12 +64,12 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 
 	public void open() {
 		if (_groupsModel.getSize() == 0)
-			return _status;
+			//return _status;
 // TODO Establecer la posición de la ventana de diálogo de tal manera que se
 // abra en el centro de la ventana principal
 		pack();
 		setVisible(true);
-		return _status;
+		//return _status;
 	}
 // TODO el resto de métodos van aquí…
 

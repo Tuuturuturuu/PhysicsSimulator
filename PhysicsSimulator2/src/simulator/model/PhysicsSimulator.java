@@ -32,8 +32,8 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 		this.listOrderedGroupIds = new ArrayList<String>();
 		this.observerList = new ArrayList<SimulatorObserver>();
 		
-		//ESTO SE INICIALIZA ASI? _groupsRO TIENE QUE SER PUBLIC? SI NO DA ERROR
 		this._groupsRO = Collections.unmodifiableMap(map);
+		//TODO ESTO SE INICIALIZA ASI?
 	}
 
 	public void advance() {
@@ -88,9 +88,9 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 		else {
 			map.get(id).setForceLaws(f);
 			
-			//ESTO ES ASI??? IM CONFUSED
+			//ESTO ES ASI??? IM CONFUSED TODO METES EL MAP.GET(ID) NO?
 			for (SimulatorObserver o : observerList)
-				o.onForceLawsChanged(map.get(id)); //PREGUNTAR A GORDI
+				o.onForceLawsChanged(map.get(id)); //PREGUNTAR A GORDILLO
 		}
 
 	}
@@ -100,7 +100,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 		if(dt < 0)
 			throw new IllegalArgumentException("Delta time introduced is negative");
 		
-		this.t = dt; //CREO QUE ES ASI PERO NO ESTOY SEGURA
+		this.t = dt; 
 		
 		for (SimulatorObserver o : observerList)
 			o.onDeltaTimeChanged(t);
@@ -140,7 +140,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 	@Override
 	public void addObserver(SimulatorObserver o) {
 		
-		if(observerList.contains(o)) //NO SE SI ES ASI, CON EL CONTAINS
+		if(observerList.contains(o)) //TODO CON EL CONTAINS?
 			throw new IllegalArgumentException("Observer already added to the list");
 		
 		observerList.add(o);

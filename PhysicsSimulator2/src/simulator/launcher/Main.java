@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -24,6 +26,7 @@ import simulator.factories.StationaryBodyBuilder;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
 import simulator.model.PhysicsSimulator;
+import simulator.view.MainWindow;
 import simulator.factories.Builder;
 import simulator.factories.BuilderBasedFactory;
 import simulator.control.Controller;
@@ -35,9 +38,11 @@ public class Main {
 	private final static Integer _stepsDefaultValue = 150;
 	private final static Double _dtimeDefaultValue = 2500.0;
 	private final static String _forceLawsDefaultValue = "nlug";
+	private final static String _modeDefaultValue = "GUI";
 
 	// some attributes to stores values corresponding to command-line parameters
 	private static Integer _steps = null;
+	private static String _mode = null;
 	private static Double _dtime = null;
 	private static String _inFile = null;
 	private static String _outFile = null;
@@ -80,6 +85,7 @@ public class Main {
 			parseForceLawsOption(line);
 			parseOutFileOption(line);
 			parseStepsOption(line);
+			parseModeOption(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -113,6 +119,13 @@ public class Main {
 				.desc("A double representing actual time, in seconds, per simulation step. Default value: "
 						+ _dtimeDefaultValue + ".")
 				.build());
+
+		// mode
+		cmdLineOptions
+				.addOption(Option.builder("m").longOpt("mode").hasArg()
+						.desc("Execution Mode. Possible values: 'batch' (Batch\r\n"
+								+ "mode), 'gui' (Graphical User Interface mode).\r\n" + "Default value: 'gui'.")
+						.build());
 
 		// force laws
 		cmdLineOptions.addOption(Option.builder("fl").longOpt("force-laws").hasArg()
@@ -188,6 +201,17 @@ public class Main {
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
 		_outFile = line.getOptionValue("o");
 	}
+	
+	private static void parseModeOption(CommandLine line) throws ParseException {
+		String s = line.getOptionValue("m", _modeDefaultValue);
+		try {
+			_mode = s.toUpperCase();
+			assert (_mode.equals("GUI") || _mode.equals("BATCH"));
+		} catch (Exception e) {
+			throw new ParseException("Invalid mode value: " + s);
+		}
+		
+	}
 
 	private static JSONObject parseWRTFactory(String v, Factory<?> factory) {
 
@@ -256,10 +280,27 @@ public class Main {
 		controller.run(_steps, output);
 
 	}
+	
+	private static void startGUIMode() throws Exception {
+		ForceLaws fl = _forceLawsFactory.createInstance(_forceLawsInfo);
+		PhysicsSimulator pSimulator = new PhysicsSimulator(fl, _dtime);
+		Controller controller = new Controller(pSimulator, _bodyFactory, _forceLawsFactory);
+		
+		if(_inFile != null) {
+			InputStream input = new FileInputStream(_inFile);
+			controller.loadData(input);
+		}	
+		
+		SwingUtilities.invokeAndWait(() -> new MainWindow(controller));
+		
+	}
 
 	private static void start(String[] args) throws Exception {
 		parseArgs(args);
-		startBatchMode();
+		if(_mode.equalsIgnoreCase("GUI"))
+			startGUIMode();
+		else 
+			startBatchMode();
 	}
 
 	public static void main(String[] args) {

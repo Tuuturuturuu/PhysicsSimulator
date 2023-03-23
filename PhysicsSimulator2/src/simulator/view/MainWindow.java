@@ -37,7 +37,9 @@ public class MainWindow extends JFrame {
 		//CREAR LA TABLA DE GRUPOS Y AÑADIRLA A CONTENT PANEL.
 		GroupsTableModel groupsTable = new GroupsTableModel(_ctrl);
 		contentPanel.setPreferredSize(new Dimension(500, 250));
-		contentPanel.add(groupsTable);
+		contentPanel.add(groupsTable); 
+		//TODO NO DEJA HACER UN ADD NI DE GROUPSTABLE NI DE BODIESTABLE
+		
 		
 		
 		//CREAR LA TABLA DE CUERPOS Y AÑADIRLA AL CONTENT PANEL.
@@ -48,7 +50,7 @@ public class MainWindow extends JFrame {
 		// TODO llama a Utils.quit(MainWindow.this) en el método windowClosing
 		Utils.quit(MainWindow.this);
 		WindowListener windowListener;
-		windowListener.windowClosing();
+		windowListener.windowClosing(); //COMO SE HACE ESTO TT
 		
 		addWindowListener(windowListener);
 		
