@@ -141,6 +141,9 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 
 		// LE ASIGNAMOS EL ICONO (IMAGEN) AL LOAD BUTTON
 		this.loadButton.setIcon(new ImageIcon(this.getClass().getResource("/icons/open.png")));
+		//getClass() ->PARA ACCEDER AL PROYECTO;
+		//getResource -> PARA ACCEDER A LA CARPETA RESOURCES
+		//LA DEIRECCION DEL ICONO 
 
 		// LE ASIGNAMOS AL BOTON UNA ACCION AL PULSARLO: (CON UN ACTION LISTENER)
 		this.loadButton.addActionListener(new ActionListener() {

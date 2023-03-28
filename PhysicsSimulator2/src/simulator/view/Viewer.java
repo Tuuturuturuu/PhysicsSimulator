@@ -10,9 +10,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import simulator.misc.Vector2D;
@@ -84,72 +86,57 @@ class Viewer extends SimulationViewer {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
+				switch(e.getKeyChar()) {
+				case 'j': 
+					_originX += 10;
+					_originY += -10;
+					break;
+				case 'l': 
+					_originX += 10;
+					_originY += -10;
+					break;
+				case 'i':
+					_originX += 10;
+					_originY += -10;
+					break;
+				case 'm':
+					_originX += 10;
+					_originY += -10;
+					break;
+				case 'h':
+					_showHelp = !_showHelp;
+					break;
+				case 'v':
+					_showVectors = !_showVectors;
+					break;
+				case 'k':
+					_originX = 0;
+					_originY = 0;
+					break;
+				case 'g': //-> PREGUNTAR SI ESTA PARTE ESTA BIEN;
+					_selectedGroupIdx++; //-> PONEMOS EL ID A 1;
+					if(_selectedGroupIdx == _groups.size()) { //-> SI ES IGUAL A GROUP.SIZE LO CAMBIAMOS A -1;
+						_selectedGroupIdx = -1; //-> PARA COMENZAR DE NUEVO 
+					}
+					//PREGUNTAR QUE SI SHOWBODIES ES IGUAL QUE DRAWBODIES
+					break;
+				}
+				repaint();
+				
+				/* CORREGIR CON PABLO:
+				 * ES: gestionar la tecla 'g' de manera que haga visible el siguiente grupo.
+				 * Tenga en cuenta que después del último grupo, se muestran todos los cuerpos.
+				 * Esto se puede hacer modificando _selectedGroupIdx de -1 (todos los grupos) a
+				 * _groups.size()-1 de forma circular. Cuando su valor es -1, _selectedGroup
+				 * sería nulo, de lo contrario, sería el id del grupo correspondiente. En el
+				 * método showBodies, solo dibujarás los que pertenecen al grupo seleccionado.
+				 * 
+				 */
 			}
 
 			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-
-			/*
-			 * 
-			 * TODO
-			 * 
-			 * EN: handle keys 'j','l','i','m' to add 10/-10 to _originX/_originY, and then
-			 * call repaint(). This will make the origin point moves left/right/up/down. See
-			 * how the values of _centerX and _centerY are calculated in method
-			 * paintComponent
-			 * 
-			 * ES: Gestiona las teclas 'j','l','i','m' para sumar 10/-10 a
-			 * _originX/_originY, y luego llame a repaint(). Esto hará que el punto de
-			 * origen se mueva hacia la izquierda/derecha/arriba/abajo. Vea cómo se calculan
-			 * los valores de _centerX y _centerY en el método paintComponent
-			 * 
-			 * TODO
-			 * 
-			 * EN: handle key 'k' to set _originX and _originY to 0, and then call
-			 * repaint(). This will return the origin point to the center of the window.
-			 * 
-			 * ES: Gestiona la tecla 'k' para poner _originX y _originY en 0, y luego llame
-			 * a repaint(). Esto hace que el punto de origen sea el centro de la ventana.
-			 * 
-			 * TODO
-			 * 
-			 * EN: handle key 'h' to change the value of _showHelp to !_showHelp, and then
-			 * call repaint(). This will make show/hide the help text - see method
-			 * paintComponent
-			 * 
-			 * ES: gestiona la tecla 'h' para cambiar el valor de _showHelp a !_showHelp, y
-			 * luego llame a repaint(). Esto hará que se muestre/oculte el texto de ayuda -
-			 * ver método paintComponent
-			 * 
-			 * TODO
-			 * 
-			 * EN: handle key 'v' to change the value of _showVectors to !_showVectors, and
-			 * then call repaint(). You will use this variable in drawBodies to decide if to
-			 * show or hide the velocity/force vectors.
-			 * 
-			 * ES: gestiona la tecla 'v' para cambiar el valor de _showVectors a
-			 * !_showVectors, y luego llame a repaint(). Tienes que usar esta variable en
-			 * drawBodies para decidir si mostrar u ocultar los vectores de
-			 * velocidad/fuerza.
-			 * 
-			 * TODO
-			 * 
-			 * EN: handle key 'g' such that it makes the next group visible. Note that after
-			 * the last group all bodies are shown again. This should be done by modifying
-			 * _selectedGroupIdx from -1 (all groups) to _groups.size()-1 in a circular way.
-			 * When its value is -1 you should set _selectedGroup to null, otherwise to the
-			 * id of the corresponding group. Then in method showBodies you will draw only
-			 * those that belong to the selected group.
-			 * 
-			 * ES: gestionar la tecla 'g' de manera que haga visible el siguiente grupo.
-			 * Tenga en cuenta que después del último grupo, se muestran todos los cuerpos.
-			 * Esto se puede hacer modificando _selectedGroupIdx de -1 (todos los grupos) a
-			 * _groups.size()-1 de forma circular. Cuando su valor es -1, _selectedGroup
-			 * sería nulo, de lo contrario, sería el id del grupo correspondiente. En el
-			 * método showBodies, solo dibujarás los que pertenecen al grupo seleccionado.
-			 * 
-			 */
+			public void keyReleased(KeyEvent e) {}
+			
 			@Override
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyChar()) {
@@ -211,8 +198,14 @@ class Viewer extends SimulationViewer {
 		_centerX = getWidth() / 2 - _originX;
 		_centerY = getHeight() / 2 - _originY;
 
-		// TODO draw red cross at (_centerX,_centerY)
-
+		//LA CURZ ROJA DEL CENTRO 
+		gr.setColor(Color.RED);
+		// LINEA VERTICAL 
+	    g.drawLine(_originX, -_centerY, _originX, _centerY);
+	    // LINEA HORIZONTAL 
+	    g.drawLine(-_centerX, _originY, _centerX, _originY);
+		
+		
 		// draw bodies
 		drawBodies(gr);
 
@@ -221,44 +214,35 @@ class Viewer extends SimulationViewer {
 			showHelp(gr);
 		}
 	}
-
+	
+	private String getRatio() {
+		return "Scaling ratio: " + this._scale;
+	}
+	
 	private void showHelp(Graphics2D g) {
-		/*
-		 * TODO
-		 * 
-		 * EN: complete to show the following text on the top-left corner:
-		 * 
-		 * h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit //
-		 * l: move right, j: move left, i: move up, m: move down: k: reset 
-		 * g: show next group
-		 * Scaling ratio: ... 
-		 * Selected Group: ...
-		 * 
-		 * ES: completa el método para que muestre el siguiente texto en la esquina
-		 * superior izquierda:
-		 * 
+		/* ESTO ES LO QUE SE MUESTRA ARRIBA EN ROJO EM LA ESQUINA SUPERIOR IZQUIERDA;
 		 * h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit 
 		 * l: move right, j: move left, i: move up, m: move down: k: reset 
 		 * g: show next group
 		 * Scaling ratio: ... 
 		 * Selected Group: ...
-		 * 
 		 */
+		String _help = "h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit \r\n"
+				+ "		l: move right, j: move left, i: move up, m: move down: k: reset \r\n"
+				+ "		g: show next group";
+		g.drawString(_help, 20, getHeight() - (getHeight() - 25));
+		g.drawString(getRatio(), 20, getHeight() - (getHeight() - 40));
+		String group = "Selected Group: ";
+		g.drawString(group, 20, getHeight() - (getHeight() - 40));
 	}
-
+	
+	private void showBodies() {
+		 
+	}
+	
 	private void drawBodies(Graphics2D g) {
 		/*
 		 * TODO
-		 * 
-		 * EN: draw all bodies for which isVisible(b) return 'true' (see isVisible
-		 * below, it returns true if the body belongs to the selected group). For each
-		 * body, you should draw the velocity and force vectors if _showVectors is true.
-		 * Use method drawLineWithArrow to draw the vectors. The color of body 'b'
-		 * should be _gColor.get(b.getgId()) -- see method addGroup below. You should
-		 * assume that the origin point is (_centerX,_centerY), and recall to divide the
-		 * coordinates of the body by the value of _scale.
-		 * 
-		 * 
 		 * ES: Dibuja todos los cuerpos para los que isVisible(b) devuelve 'true' (ver
 		 * isVisible abajo, devuelve 'true' si el cuerpo pertenece al grupo
 		 * seleccionado). Para cada cuerpo, debes dibujar los vectores de velocidad y
@@ -269,17 +253,29 @@ class Viewer extends SimulationViewer {
 		 * valor de _scale.
 		 * 
 		 */
+		
+		for(Body b: _bodies) {
+			if(isVisible(b)) {
+				Color color = _gColor.get(b.getgId());
+				g.setColor(color);
+				//DIBUJAR EL CUERPO; NO SE QUE FUNCION USAR PORQUE NO HAY B.DRAW;
+				if(_showVectors == true) {
+					Vector2D velocidad = b.getVelocity();
+					Vector2D fuerza = b.getForce();
+				}
+				
+				//COMO OBTENGO LOS PARAMETROS DE LA FUNCION DRAWLINE?
+				//DRAWLINEWITHARROW() PARA LA FUERZA
+				//DRAWLINEWITHARROW() PARA LA VELOCIDAD
+			}
+		} 
+		
 	}
 
 	private boolean isVisible(Body b) {
-		/*
-		 * TODO 
-		 * 
-		 * EN: return true if _selectedGroup is null or equal to b.getgId() 
-		 * 
-		 * ES: devuelve true si _selectedGroup es null o igual a b.getgId()
-		 *
-		 */
+		if(_selectedGroup == null || _selectedGroup == b.getgId()) {
+			return true;
+		}
 		return false;
 	}
 
@@ -301,14 +297,10 @@ class Viewer extends SimulationViewer {
 
 	@Override
 	public void addGroup(BodiesGroup g) {
-		/*
-		 * TODO
-		 * 
-		 * EN: add g to _groups and its bodies to _bodies
-		 *
-		 * ES: añadir g a _groups y sus cuerpos a _bodies
-		 * 
-		 */
+		for(Body b: g._bodiesRO) { //-> _BODIESRO ES LA LISTA DE BODIES;
+			_bodies.add(b);
+		}
+		_groups.add(g); //-> AÑADIR G A _GROUPS;
 		_gColor.put(g.getId(), _colorGen.nextColor()); // assign color to group
 		autoScale();
 		update();
@@ -316,29 +308,16 @@ class Viewer extends SimulationViewer {
 
 	@Override
 	public void addBody(Body b) {
-		/*
-		 * TODO
-		 * 
-		 *  EN: add b to _bodies
-		 *  
-		 *  ES: añadir b a _bodies
-		 *  
-		 */
+		_bodies.add(b); //-> AÑADIR B A _BODIES
 		autoScale();
 		update();
 	}
 
 	@Override
 	public void reset() {
-		/*
-		 * TODO
-		 * 
-		 * EN: clear the group list, bodies list, and the colors map
-		 * 
-		 * ES: borrar (usando el método clear) la lista de grupos, la lista de cuerpos y
-		 * el mapa de colores
-		 * 
-		 */
+		_groups.clear();
+		_bodies.clear();
+		_gColor.clear();
 		_colorGen.reset(); // reset the color generator
 		_selectedGroupIdx = -1;
 		_selectedGroup = null;
@@ -353,12 +332,7 @@ class Viewer extends SimulationViewer {
 	// This method draws a line from (x1,y1) to (x2,y2) with an arrow.
 	// The arrow is of height h and width w.
 	// The last two arguments are the colors of the arrow and the line
-	private void drawLineWithArrow(//
-			Graphics g, //
-			int x1, int y1, //
-			int x2, int y2, //
-			int w, int h, //
-			Color lineColor, Color arrowColor) {
+	private void drawLineWithArrow(Graphics g, int x1, int y1, int x2, int y2, int w, int h, Color lineColor, Color arrowColor) {
 
 		int dx = x2 - x1, dy = y2 - y1;
 		double D = Math.sqrt(dx * dx + dy * dy);
