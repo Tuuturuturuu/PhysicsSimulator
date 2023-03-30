@@ -19,9 +19,10 @@ public class NoForceBuilder extends Builder<ForceLaws> {
 	}
 	
 	public JSONObject getInfo() {
-			
+			JSONObject ret = super.getInfo();
 			JSONObject data = new JSONObject();//DEJAS EL JSONOBJECT DATA VACIO?
 			
-			return data;
+			ret.put("data", data);
+			return ret;
 	}
 }

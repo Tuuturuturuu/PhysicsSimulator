@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -96,51 +97,31 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 	}
 
 	private void createDeltaTimeText() {
-		dtText = new JTextField();
-		dtText.setText(String.valueOf(_dt));
+		dtText = new JTextField(String.valueOf(_dt));
 		dtText.setMinimumSize(new Dimension(80, 30));
 		dtText.setMaximumSize(new Dimension(200, 30));
 		dtText.setPreferredSize(new Dimension(80, 30));	
-		dtText.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-	
-				_dt = Integer.parseInt(dtText.getText());
-				
-			}
-			
-		});		
-		
+
 		this._toolaBar.add(dtText);
-		
 	}
 
 	private void createStepsSpinner() {
-		stepsSpinner = new JSpinner();
-		stepsSpinner.setValue(_steps);
+		stepsSpinner = new JSpinner(new SpinnerNumberModel(_steps, 1, _steps, 100));
 		stepsSpinner.setMinimumSize(new Dimension(80, 30));
 		stepsSpinner.setMaximumSize(new Dimension(200, 30));
-		stepsSpinner.setPreferredSize(new Dimension(80, 30));	
-		stepsSpinner.addChangeListener(new ChangeListener() {
+		stepsSpinner.setPreferredSize(new Dimension(80, 30));			
 
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				_dt = Integer.parseInt(dtText.getText());
-			}
-			
-		});		
-		
 		this._toolaBar.add(stepsSpinner);
-		
 	}
 
 	private void createLoadButton() {
-		this._fc = new JFileChooser();
-		this.stopButton.setToolTipText("Load File");
+		this._fc = new JFileChooser("resources/examples/input/");
+		
 		this.loadButton = new JButton();
+		this.loadButton.setToolTipText("Load File");
 
 		// LE ASIGNAMOS EL ICONO (IMAGEN) AL LOAD BUTTON
-		this.loadButton.setIcon(new ImageIcon(this.getClass().getResource("/icons/open.png")));
+		this.loadButton.setIcon(new ImageIcon("resources/icons/open.png"));
 		//getClass() ->PARA ACCEDER AL PROYECTO;
 		//getResource -> PARA ACCEDER A LA CARPETA RESOURCES
 		//LA DEIRECCION DEL ICONO 
@@ -152,23 +133,25 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 			public void actionPerformed(ActionEvent e) {
 
 				// SE ABRE EL SELECTOR DE ARCHIVOS PARA ELEGIR EL FICHERO DE ENTRADA
-				if (_fc.showOpenDialog(Utils.getWindow(_fc)) == JFileChooser.APPROVE_OPTION) 
+				//EL SHOWOPENDIALOG RECIBE LO QUE VA A CONTENER A ESA COMPONENTE
+				if (_fc.showOpenDialog(Utils.getWindow(_fc)) == JFileChooser.APPROVE_OPTION) {
 					// SI SE HA PODIDO SELECCIONAR UN ARCHIVO, SE MUESTRA
 					// EL ARCHIVO SELECCIONADO
-					JOptionPane.showMessageDialog(_fc, "The file you have selected is: " + _fc.getSelectedFile());
-				else
-					JOptionPane.showMessageDialog(_fc, "An error has ocurred.");
+					//JOptionPane.showMessageDialog(_fc, "The file you have selected is: " + _fc.getSelectedFile());
 
-				// SE SELECCIONA EL ARCHIVO
-				File file = _fc.getSelectedFile();
-				InputStream is;
+					// SE SELECCIONA EL ARCHIVO
+					File file = _fc.getSelectedFile();
+					InputStream is;
 
-				try {// SI SE HA SELECCIONADO UN ARCHIVO SE RESETEA Y CARGAN LOS DATOS DEL ARCHIVO
-					is = new FileInputStream(file);
-					_ctrl.reset();
-					_ctrl.loadData(is);
-				} catch (FileNotFoundException e1) {// SI NO SE SELECCIONA UN ARCHIVO SE LANZA UN ERROR
-					JOptionPane.showMessageDialog(null, "An error has ocurred.");
+					try {// SI SE HA SELECCIONADO UN ARCHIVO SE RESETEA Y CARGAN LOS DATOS DEL ARCHIVO
+						is = new FileInputStream(file);
+						_ctrl.reset();
+						_ctrl.loadData(is);
+					} catch (FileNotFoundException e1) {// SI NO SE SELECCIONA UN ARCHIVO SE LANZA UN ERROR
+						JOptionPane.showMessageDialog(null, "An error has happened", "ERROR", JOptionPane.ERROR_MESSAGE) ;
+
+
+					}
 				}
 			}
 
@@ -181,13 +164,13 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 	private void createFldButton() {//TODO
 
 		this.fldButton = new JButton();
-		this.stopButton.setToolTipText("Add Force Law");
-		this.fldButton.setIcon(new ImageIcon(this.getClass().getResource("/icons/physics.png")));
+		this.fldButton.setToolTipText("Add Force Law");
+		this.fldButton.setIcon(new ImageIcon("resources/icons/open.png"));
 
-		ForceLawsDialog fld = new ForceLawsDialog(null, _ctrl);
-
-		fldButton.add(fld);
-		fld.open();
+		//		ForceLawsDialog fld = new ForceLawsDialog(null, _ctrl);
+		//
+		//		fldButton.add(fld);
+		//		fld.open();
 
 		// POR ULTIMO AÑADIMOS EL FLD BUTTON QUE HEMOS CREADO A LA TOOLBAR
 		this._toolaBar.add(fldButton);
@@ -197,8 +180,8 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 	private void createRunButton() {
 
 		this.runButton = new JButton();
-		this.stopButton.setToolTipText("Run Simulation");
-		this.runButton.setIcon(new ImageIcon(this.getClass().getResource("/icons/run")));
+		this.runButton.setToolTipText("Run Simulation");
+		this.runButton.setIcon(new ImageIcon("resources/icons/open.png"));
 
 		this.runButton.addActionListener(new ActionListener() {
 
@@ -221,31 +204,31 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 		});
 		this._toolaBar.add(runButton);
 	}
-	
+
 	private void createViewerWindowButton() {//TODO
-		
+
 		this.viewerWindowButton = new JButton();
 		this.viewerWindowButton.setToolTipText(" Window Viewer ");
-		this.stopButton.setIcon(new ImageIcon(this.getClass().getResource("/icons/viewer.png")));
-		
+		this.viewerWindowButton.setIcon(new ImageIcon("resources/icons/open.png"));
+
 		this.viewerWindowButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
+
+
 			}
-			
+
 		});
 		this._toolaBar.add(viewerWindowButton);
-		
+
 	}
 
 	private void createStopButton() {
 
 		this.stopButton = new JButton();
 		this.stopButton.setToolTipText("Stop");
-		this.stopButton.setIcon(new ImageIcon(this.getClass().getResource("/icons/stop.png")));
+		this.stopButton.setIcon(new ImageIcon("resources/icons/open.png"));
 
 		this.stopButton.addActionListener((e) -> _stopped = true);
 
@@ -255,13 +238,13 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 
 	private void run_sim(int n) {
 		if (n > 0 && !_stopped) {
-			
+
 			try {
 				_ctrl.run(1);
-				
+
 			} catch (Exception e) {
 				Utils.showErrorMsg("Couldnt run the simulation");
-				
+
 				//ACTIVAR TODOS LOS BOTONES
 				stopButton.setEnabled(true);
 				_quitButton.setEnabled(true);
@@ -269,19 +252,19 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 				fldButton.setEnabled(true);
 				loadButton.setEnabled(true);
 				viewerWindowButton.setEnabled(true);
-				
+
 				stepsSpinner.setEnabled(true);
 				dtText.setEnabled(true);
-				
+
 				_stopped = true;
 				return;
 			}
-			
+
 			SwingUtilities.invokeLater(() -> run_sim(n - 1));
-			
+
 		} else {
 			Utils.showErrorMsg("Simulation stopped");
-			
+
 			//ACTIVAR TODOS LOS BOTONES
 			stopButton.setEnabled(true);
 			_quitButton.setEnabled(true);
@@ -289,40 +272,37 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 			fldButton.setEnabled(true);
 			loadButton.setEnabled(true);
 			viewerWindowButton.setEnabled(true);
-			
+
 			stepsSpinner.setEnabled(true);
 			dtText.setEnabled(true);
-			
+
 			_stopped = true;
 		}
 	}
-	
+
 	//METODOS QUE IMPLEMENTAN SIMULATOR OBSERVER
-	//TODO GORDILLO AIUDA
+	//TODO AIUDA
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-//		SwingUtilities.invokeLater( new Runnable() { 
-//			@Override 
-//			public void run() { _ctrl.setDeltaTime(_dt); }
-//			
-//		});
+		//		SwingUtilities.invokeLater( new Runnable() { 
+		//			@Override 
+		//			public void run() { _ctrl.setDeltaTime(_dt); }
+		//			
+		//		});
 
 	}
 
-	@Override
-	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		//TODO
-
-	}
-	
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-		
+
 		//TODO
 	}
-	
+
 	//METODOS VACIOS
+	
+	@Override
+	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {}
@@ -332,7 +312,7 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 
 	@Override
 	public void onForceLawsChanged(BodiesGroup g) {}
-	
+
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {}
 }

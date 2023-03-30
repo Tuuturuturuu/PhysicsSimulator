@@ -2,11 +2,13 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
 import simulator.control.Controller;
 
@@ -34,25 +36,60 @@ public class MainWindow extends JFrame {
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
 		
+		InfoTable iTableGroups = new InfoTable("Groups", new GroupsTableModel(_ctrl));
+		InfoTable iTableBodies = new InfoTable("Bodies", new BodiesTableModel(_ctrl));
+		
 		//CREAR LA TABLA DE GRUPOS Y AÑADIRLA A CONTENT PANEL.
-		GroupsTableModel groupsTable = new GroupsTableModel(_ctrl);
+		//GroupsTableModel groupsTable = new GroupsTableModel(_ctrl);
 		contentPanel.setPreferredSize(new Dimension(500, 250));
-		contentPanel.add(groupsTable); 
-		//TODO NO DEJA HACER UN ADD NI DE GROUPSTABLE NI DE BODIESTABLE
-		
-		
+		//JTable gTable = new JTable(iTableGroups);
+		contentPanel.add(iTableGroups); 
 		
 		//CREAR LA TABLA DE CUERPOS Y AÑADIRLA AL CONTENT PANEL.
 		BodiesTableModel bodiesTable = new BodiesTableModel(_ctrl);
 		contentPanel.setPreferredSize(new Dimension(500, 250));
-		contentPanel.add(bodiesTable);
+		JTable bTable = new JTable(bodiesTable);
+		contentPanel.add(bTable);
 		
-		// TODO llama a Utils.quit(MainWindow.this) en el método windowClosing
-		Utils.quit(MainWindow.this);
-		WindowListener windowListener;
-		windowListener.windowClosing(); //COMO SE HACE ESTO TT
-		
-		addWindowListener(windowListener);
+		addWindowListener(new WindowListener() {
+
+			@Override
+			public void windowOpened(WindowEvent e) {}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Utils.quit(MainWindow.this);
+				
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		pack();

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
@@ -17,67 +18,118 @@ class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
 
 	BodiesTableModel(Controller ctrl) {
 		_bodies = new ArrayList<>();
-	// TODO registrar this como observer
-		}
-	// TODO el resto de métodos van aquí…
+		ctrl.addObserver(this);
+	}
 
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _bodies.size();
 	}
 
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this._header.length;
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		Body b = _bodies.get(rowIndex);
+
+		Object ret = null;
+
+		switch (columnIndex) {
+		case 0:
+			ret = b.getId();
+		case 1:
+			ret = b.getgId();
+		case 2:
+			ret = b.getMass();
+		case 3:
+			ret = b.getVelocity();
+		case 4:
+			ret = b.getPosition();
+		case 5:
+			ret = b.getForce();
+		}
+		return ret;
 	}
 
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-		// TODO Auto-generated method stub
-		
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				fireTableDataChanged();
+			}
+
+		});
 	}
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				_bodies.clear();
+				fireTableStructureChanged();
+			}
+
+		});
 	}
 
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				for(BodiesGroup b : groups.values()) {
+					for(Body bd: b) {
+						_bodies.add(bd);
+					}
+				}
+				fireTableStructureChanged();
+			}
+			
+		});
 	}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
-		// TODO Auto-generated method stub
+		
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				for(Body bd: g) {
+					_bodies.add(bd);
+				}
+				fireTableStructureChanged();
+			}
+			
+		});
 		
 	}
 
 	@Override
 	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
-		// TODO Auto-generated method stub
-		
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				
+				_bodies.add(b);//TODO ES ASI?
+				fireTableDataChanged();
+			}
+
+		});
 	}
 
 	@Override
-	public void onDeltaTimeChanged(double dt) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onForceLawsChanged(BodiesGroup g) {}
 
 	@Override
-	public void onForceLawsChanged(BodiesGroup g) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onDeltaTimeChanged(double dt) {}
 }

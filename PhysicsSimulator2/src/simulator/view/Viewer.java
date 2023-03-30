@@ -220,6 +220,7 @@ class Viewer extends SimulationViewer {
 	}
 	
 	private void showHelp(Graphics2D g) {
+
 		/* ESTO ES LO QUE SE MUESTRA ARRIBA EN ROJO EM LA ESQUINA SUPERIOR IZQUIERDA;
 		 * h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit 
 		 * l: move right, j: move left, i: move up, m: move down: k: reset 
@@ -273,6 +274,7 @@ class Viewer extends SimulationViewer {
 	}
 
 	private boolean isVisible(Body b) {
+
 		if(_selectedGroup == null || _selectedGroup == b.getgId()) {
 			return true;
 		}
@@ -297,10 +299,12 @@ class Viewer extends SimulationViewer {
 
 	@Override
 	public void addGroup(BodiesGroup g) {
+
 		for(Body b: g._bodiesRO) { //-> _BODIESRO ES LA LISTA DE BODIES;
 			_bodies.add(b);
 		}
 		_groups.add(g); //-> AÑADIR G A _GROUPS;
+
 		_gColor.put(g.getId(), _colorGen.nextColor()); // assign color to group
 		autoScale();
 		update();
@@ -308,7 +312,9 @@ class Viewer extends SimulationViewer {
 
 	@Override
 	public void addBody(Body b) {
+
 		_bodies.add(b); //-> AÑADIR B A _BODIES
+
 		autoScale();
 		update();
 	}

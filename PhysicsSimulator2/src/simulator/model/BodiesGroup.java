@@ -37,9 +37,6 @@ public class BodiesGroup implements Iterable<Body>{
 	public String getForceLawsInfo(){
 		//COMO QUE HAY QUE RECORRER AQUI EL GRUPO DE BODIESGROUP G? PARA HACER EL QUE?
 		//VA AQUI?? TODO
-//		for (Body b : g) { 
-//			// do something with b
-//		}
 		return laws.toString();
 	}
 	
@@ -94,7 +91,8 @@ public class BodiesGroup implements Iterable<Body>{
 	}
 	
 	public Iterator<Body> iterator() {
-		return new Iterator<Body>() {
+		return this._bodiesRO.iterator();
+		/*return new Iterator<Body>() {
 			Iterator<Body> it = bodyList.iterator();
 			@Override
 			public Body next() { return it.next(); }
@@ -102,6 +100,6 @@ public class BodiesGroup implements Iterable<Body>{
 			public boolean hasNext() { return it.hasNext(); }
 			@Override
 			public void remove() { throw new UnsupportedOperationException("..."); }
-			};
+			};*/
 	}
 }

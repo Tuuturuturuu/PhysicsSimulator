@@ -19,7 +19,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 	private List<String> listOrderedGroupIds;
 	private List<SimulatorObserver> observerList;
 	
-	private Map<String, BodiesGroup> _groupsRO;//ESTO ES PUBLIC?
+	private Map<String, BodiesGroup> _groupsRO;
 	
 	public PhysicsSimulator(ForceLaws fl, Double t) {
 		if (t == null || fl == null)
@@ -33,7 +33,6 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 		this.observerList = new ArrayList<SimulatorObserver>();
 		
 		this._groupsRO = Collections.unmodifiableMap(map);
-		//TODO ESTO SE INICIALIZA ASI?
 	}
 
 	public void advance() {
@@ -88,9 +87,9 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 		else {
 			map.get(id).setForceLaws(f);
 			
-			//ESTO ES ASI??? IM CONFUSED TODO METES EL MAP.GET(ID) NO?
+			
 			for (SimulatorObserver o : observerList)
-				o.onForceLawsChanged(map.get(id)); //PREGUNTAR A GORDILLO
+				o.onForceLawsChanged(map.get(id));
 		}
 
 	}
@@ -140,7 +139,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 	@Override
 	public void addObserver(SimulatorObserver o) {
 		
-		if(observerList.contains(o)) //TODO CON EL CONTAINS?
+		if(observerList.contains(o))
 			throw new IllegalArgumentException("Observer already added to the list");
 		
 		observerList.add(o);
@@ -149,6 +148,9 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 
 	@Override
 	public void removeObserver(SimulatorObserver o) {
+		if(!observerList.contains(o))
+			throw new IllegalArgumentException("Observer not added to the list");
+		
 		observerList.remove(o);
 		
 	}

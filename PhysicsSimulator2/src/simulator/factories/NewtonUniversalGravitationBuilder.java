@@ -24,12 +24,13 @@ public class NewtonUniversalGravitationBuilder extends Builder<ForceLaws> {
 	}
 	
 	public JSONObject getInfo() {
-		
+		JSONObject ret = super.getInfo();
 		JSONObject data = new JSONObject();
 		
 		data.put("G",  "the gravitational constant (a number)");
+		ret.put("data", data);
 		
-		return data;
+		return ret;
 	}
 
 }

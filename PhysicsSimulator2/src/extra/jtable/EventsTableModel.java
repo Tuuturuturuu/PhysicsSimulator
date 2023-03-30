@@ -71,6 +71,7 @@ public class EventsTableModel extends AbstractTableModel {
 	// returns the value of a particular cell 
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object s = null;
+		
 		switch (columnIndex) {
 		case 0:
 			s = rowIndex;
