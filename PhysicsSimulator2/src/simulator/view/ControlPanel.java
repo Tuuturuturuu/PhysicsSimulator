@@ -2,6 +2,7 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -42,7 +43,8 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 	private int _steps = 10000;
 	JSpinner stepsSpinner;
 	JTextField dtText;
-
+	ForceLawsDialog _fld;
+	
 	// BOTONES
 	private JButton loadButton; // ICONO DE CARPETA
 	private JButton fldButton; // ICONO REDONDO AZUL
@@ -165,23 +167,28 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 
 		this.fldButton = new JButton();
 		this.fldButton.setToolTipText("Add Force Law");
-		this.fldButton.setIcon(new ImageIcon("resources/icons/open.png"));
+		this.fldButton.setIcon(new ImageIcon("resources/icons/physics.png"));
+		//Frame f = (Frame) SwingUtilities.windowForComponent(this);
 
-		//		ForceLawsDialog fld = new ForceLawsDialog(null, _ctrl);
-		//
-		//		fldButton.add(fld);
-		//		fld.open();
+		this.fldButton.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(_fld == null)
+					_fld = new ForceLawsDialog(Utils.getWindow(ControlPanel.this), _ctrl); 
+				_fld.open();
+			}
+			
+		});
 		// POR ULTIMO AÑADIMOS EL FLD BUTTON QUE HEMOS CREADO A LA TOOLBAR
 		this._toolaBar.add(fldButton);
-
 	}
 
 	private void createRunButton() {
 
 		this.runButton = new JButton();
 		this.runButton.setToolTipText("Run Simulation");
-		this.runButton.setIcon(new ImageIcon("resources/icons/open.png"));
+		this.runButton.setIcon(new ImageIcon("resources/icons/run.png"));
 
 		this.runButton.addActionListener(new ActionListener() {
 
@@ -209,7 +216,7 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 
 		this.viewerWindowButton = new JButton();
 		this.viewerWindowButton.setToolTipText(" Window Viewer ");
-		this.viewerWindowButton.setIcon(new ImageIcon("resources/icons/open.png"));
+		this.viewerWindowButton.setIcon(new ImageIcon("resources/icons/viewer.png"));
 
 		this.viewerWindowButton.addActionListener(new ActionListener() {
 
@@ -228,7 +235,7 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 
 		this.stopButton = new JButton();
 		this.stopButton.setToolTipText("Stop");
-		this.stopButton.setIcon(new ImageIcon("resources/icons/open.png"));
+		this.stopButton.setIcon(new ImageIcon("resources/icons/stop.png"));
 
 		this.stopButton.addActionListener((e) -> _stopped = true);
 

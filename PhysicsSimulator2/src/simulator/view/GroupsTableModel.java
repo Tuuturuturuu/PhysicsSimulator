@@ -18,7 +18,6 @@ class GroupsTableModel extends AbstractTableModel implements SimulatorObserver {
 
 	GroupsTableModel(Controller ctrl) {
 		_groups = new ArrayList<>();
-
 		// REGISTRAR THIS COMO OBSERVADOR
 		ctrl.addObserver(this);
 	}
