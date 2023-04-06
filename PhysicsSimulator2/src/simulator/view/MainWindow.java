@@ -44,12 +44,13 @@ public class MainWindow extends JFrame {
 		contentPanel.setPreferredSize(new Dimension(500, 250));
 		//JTable gTable = new JTable(iTableGroups);
 		contentPanel.add(iTableGroups); 
+		contentPanel.add(iTableBodies); 
 		
 		//CREAR LA TABLA DE CUERPOS Y AÑADIRLA AL CONTENT PANEL.
-		BodiesTableModel bodiesTable = new BodiesTableModel(_ctrl);
-		contentPanel.setPreferredSize(new Dimension(500, 250));
-		JTable bTable = new JTable(bodiesTable);
-		contentPanel.add(bTable);
+		//BodiesTableModel bodiesTable = new BodiesTableModel(_ctrl);
+		//contentPanel.setPreferredSize(new Dimension(500, 250));
+		//JTable bTable = new JTable(bodiesTable);
+		//contentPanel.add(bTable);
 		
 		addWindowListener(new WindowListener() {
 
@@ -93,6 +94,7 @@ public class MainWindow extends JFrame {
 		
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		pack();
+		this.setLocationRelativeTo(null);;
 		setVisible(true);
 	}
 }

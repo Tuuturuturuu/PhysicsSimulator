@@ -25,7 +25,12 @@ class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
 	public int getRowCount() {
 		return _bodies.size();
 	}
-
+	
+	@Override
+	public String getColumnName(int col) {
+		return _header[col];
+	}
+	
 	@Override
 	public int getColumnCount() {
 		return this._header.length;
@@ -40,16 +45,22 @@ class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
 		switch (columnIndex) {
 		case 0:
 			ret = b.getId();
+			break;
 		case 1:
 			ret = b.getgId();
+			break;
 		case 2:
 			ret = b.getMass();
+			break;
 		case 3:
 			ret = b.getVelocity();
+			break;
 		case 4:
 			ret = b.getPosition();
+			break;
 		case 5:
 			ret = b.getForce();
+			break;
 		}
 		return ret;
 	}
