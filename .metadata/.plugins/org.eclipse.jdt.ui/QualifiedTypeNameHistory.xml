@@ -4,4 +4,5 @@
     <fullyQualifiedTypeName name="java.util.Vector"/>
     <fullyQualifiedTypeName name="javax.swing.JScrollPane"/>
     <fullyQualifiedTypeName name="java.awt.Window"/>
+    <fullyQualifiedTypeName name="java.awt.geom.Arc2D.Double"/>
 </qualifiedTypeNameHistroy>

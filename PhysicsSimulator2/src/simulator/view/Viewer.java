@@ -113,25 +113,15 @@ class Viewer extends SimulationViewer {
 					_originX = 0;
 					_originY = 0;
 					break;
-				case 'g': //-> PREGUNTAR SI ESTA PARTE ESTA BIEN;
+				case 'g': 
 					_selectedGroupIdx++; //-> PONEMOS EL ID A 1;
-					if(_selectedGroupIdx == _groups.size()) { //-> SI ES IGUAL A GROUP.SIZE LO CAMBIAMOS A -1;
+					if(_selectedGroupIdx == _groups.size() - 1) { //-> SI ES IGUAL A GROUP.SIZE LO CAMBIAMOS A -1;
 						_selectedGroupIdx = -1; //-> PARA COMENZAR DE NUEVO 
+						_selectedGroup = null;
 					}
-					//PREGUNTAR QUE SI SHOWBODIES ES IGUAL QUE DRAWBODIES
 					break;
 				}
 				repaint();
-				
-				/* CORREGIR CON PABLO:
-				 * ES: gestionar la tecla 'g' de manera que haga visible el siguiente grupo.
-				 * Tenga en cuenta que después del último grupo, se muestran todos los cuerpos.
-				 * Esto se puede hacer modificando _selectedGroupIdx de -1 (todos los grupos) a
-				 * _groups.size()-1 de forma circular. Cuando su valor es -1, _selectedGroup
-				 * sería nulo, de lo contrario, sería el id del grupo correspondiente. En el
-				 * método showBodies, solo dibujarás los que pertenecen al grupo seleccionado.
-				 * 
-				 */
 			}
 
 			@Override
@@ -198,7 +188,7 @@ class Viewer extends SimulationViewer {
 		_centerX = getWidth() / 2 - _originX;
 		_centerY = getHeight() / 2 - _originY;
 
-		//LA CURZ ROJA DEL CENTRO 
+		//LA CRUZ ROJA DEL CENTRO 
 		gr.setColor(Color.RED);
 		// LINEA VERTICAL 
 	    g.drawLine(_originX, -_centerY, _originX, _centerY);
@@ -220,21 +210,11 @@ class Viewer extends SimulationViewer {
 	}
 	
 	private void showHelp(Graphics2D g) {
-
-		/* ESTO ES LO QUE SE MUESTRA ARRIBA EN ROJO EM LA ESQUINA SUPERIOR IZQUIERDA;
-		 * h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit 
-		 * l: move right, j: move left, i: move up, m: move down: k: reset 
-		 * g: show next group
-		 * Scaling ratio: ... 
-		 * Selected Group: ...
-		 */
-		String _help = "h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit \r\n"
-				+ "		l: move right, j: move left, i: move up, m: move down: k: reset \r\n"
-				+ "		g: show next group";
-		g.drawString(_help, 20, getHeight() - (getHeight() - 25));
+		g.drawString("h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit \r\n", 10, 15); 
+		g.drawString("l: move right, j: move left, i: move up, m: move down: k: reset \r\n", 10, 15);
+		g.drawString("g: show next group", 10, 15);
 		g.drawString(getRatio(), 20, getHeight() - (getHeight() - 40));
-		String group = "Selected Group: ";
-		g.drawString(group, 20, getHeight() - (getHeight() - 40));
+		g.drawString("Selected Group: ", 20, getHeight() - (getHeight() - 40));
 	}
 	
 	private void showBodies() {
@@ -242,9 +222,7 @@ class Viewer extends SimulationViewer {
 	}
 	
 	private void drawBodies(Graphics2D g) {
-		/*
-		 * TODO
-		 * ES: Dibuja todos los cuerpos para los que isVisible(b) devuelve 'true' (ver
+		/* ES: Dibuja todos los cuerpos para los que isVisible(b) devuelve 'true' (ver
 		 * isVisible abajo, devuelve 'true' si el cuerpo pertenece al grupo
 		 * seleccionado). Para cada cuerpo, debes dibujar los vectores de velocidad y
 		 * fuerza si _showVectors es 'true'. Usa el método drawLineWithArrow para
@@ -252,25 +230,36 @@ class Viewer extends SimulationViewer {
 		 * _gColor.get(b.getgId()) -- ver el método addGroup. Como punto de origen usar
 		 * (_centerX,_centerY), y recordar dividir las coordenadas del cuerpo por el
 		 * valor de _scale.
-		 * 
 		 */
+		
+		
+		Graphics gr = (Graphics)g;
 		
 		for(Body b: _bodies) {
 			if(isVisible(b)) {
-				Color color = _gColor.get(b.getgId());
-				g.setColor(color);
-				//DIBUJAR EL CUERPO; NO SE QUE FUNCION USAR PORQUE NO HAY B.DRAW;
+				g.setColor(_gColor.get(b.getgId()));
+				Vector2D p = b.getPosition();
+				int x = _centerX + (int)(p.getX() / _scale);
+				int y = _centerY + (int)(p.getY() / _scale);
+				gr.fillOval(x, y, 5, 5);
+
 				if(_showVectors == true) {
 					Vector2D velocidad = b.getVelocity();
+					int xVel2 = _centerX + (int)(velocidad.getX() / _scale);
+					int yVel2 = _centerY + (int)(velocidad.getY() / _scale);
 					Vector2D fuerza = b.getForce();
+				    int xFrce2 = _centerX + (int)(fuerza.getX() / _scale);
+				    int yFrce2 = _centerY + (int)(fuerza.getY() / _scale);
+				    
+				    
+					//LA FLECHA DE LA VELOCIDAD;
+					drawLineWithArrow(gr, _centerX, _centerY, xVel2, yVel2, 2, 2, Color.GREEN, Color.GREEN);
+					//LA FLECHA DE LA FUERZA;
+					drawLineWithArrow(gr, _centerX, _centerY, xFrce2, yFrce2, 2, 2, Color.RED, Color.RED);
+				 
 				}
-				
-				//COMO OBTENGO LOS PARAMETROS DE LA FUNCION DRAWLINE?
-				//DRAWLINEWITHARROW() PARA LA FUERZA
-				//DRAWLINEWITHARROW() PARA LA VELOCIDAD
 			}
 		} 
-		
 	}
 
 	private boolean isVisible(Body b) {
@@ -299,12 +288,11 @@ class Viewer extends SimulationViewer {
 
 	@Override
 	public void addGroup(BodiesGroup g) {
-
+		_groups.add(g); //-> AÑADE G A _GROUPS;
 		for(Body b: g._bodiesRO) { //-> _BODIESRO ES LA LISTA DE BODIES;
-			_bodies.add(b);
+			_bodies.add(b); //-> AÑADE LOS CUERPOS A _BODIES;
 		}
 		_groups.add(g); //-> AÑADIR G A _GROUPS;
-
 		_gColor.put(g.getId(), _colorGen.nextColor()); // assign color to group
 		autoScale();
 		update();

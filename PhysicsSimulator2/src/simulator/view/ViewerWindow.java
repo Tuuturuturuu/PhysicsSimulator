@@ -33,7 +33,6 @@ private void intiGUI() {
 	_viewer = new Viewer();
 	JScrollPane scrollPane = new JScrollPane(_viewer);
 	mainPanel.add(scrollPane, BorderLayout.CENTER);
-	 //PREGUNTAR SI HAY QUE PONER PREFEREDSIZE;
 	addWindowListener(new WindowListener() {
 
 		@Override
@@ -41,7 +40,7 @@ private void intiGUI() {
 		}
 
 		@Override
-		public void windowClosing(WindowEvent e) { //-> VER SI ESTO ESTA BIEN;
+		public void windowClosing(WindowEvent e) { //-> VER SI ESTO ESTA BIEN; TODO
 			Window window = e.getWindow();
 	        window.removeWindowListener(this);
 		}
