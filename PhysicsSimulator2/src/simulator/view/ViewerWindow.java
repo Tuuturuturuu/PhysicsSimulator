@@ -40,9 +40,10 @@ private void intiGUI() {
 		}
 
 		@Override
-		public void windowClosing(WindowEvent e) { //-> VER SI ESTO ESTA BIEN; TODO
+		public void windowClosing(WindowEvent e) { //-> VER SI ESTO ESTA BIEN;
 			Window window = e.getWindow();
 	        window.removeWindowListener(this);
+	     //_ctrl.removeObserver(this);
 		}
 
 		@Override
@@ -75,22 +76,21 @@ private void intiGUI() {
 	setVisible(true);
 }
 
-//PREGUNTAR QUE HACER CON LOS GROUPS DE LA CABECERA;
 @Override
-public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-	_viewer.update();
-	
+public void onAdvance(Map<String, BodiesGroup> groups, double time) { 
+	_viewer.update();	
 }
 
 @Override
-public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
+public void onReset(Map<String, BodiesGroup> groups, double time, double dt) { //TODO
 	_viewer.reset();
-	//_viewer.addGroup();
 }
 
 @Override
-public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-	//_viewer.addGroup();
+public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) { //TODO
+	for(BodiesGroup g: groups.values()) {
+		_viewer.addGroup(g);
+	}
 }
 
 @Override

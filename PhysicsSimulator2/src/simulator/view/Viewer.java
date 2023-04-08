@@ -83,6 +83,8 @@ class Viewer extends SimulationViewer {
 
 		// add a key listener to handle the user actions
 		addKeyListener(new KeyListener() {
+			
+			Graphics2D gr;
 
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -114,11 +116,21 @@ class Viewer extends SimulationViewer {
 					_originY = 0;
 					break;
 				case 'g': 
-					_selectedGroupIdx++; //-> PONEMOS EL ID A 1;
+					
 					if(_selectedGroupIdx == _groups.size() - 1) { //-> SI ES IGUAL A GROUP.SIZE LO CAMBIAMOS A -1;
-						_selectedGroupIdx = -1; //-> PARA COMENZAR DE NUEVO 
+						_selectedGroupIdx = -1; //-> PARA COMENZAR DE NUEVO Y ENSEÑAMOS TODOS LOS GRUPOS;
 						_selectedGroup = null;
 					}
+					/*else if (_selectedGroupIdx == -1) { //SI NO HAY NINGUN GRUPO ELEGIDO SELECCIONAMOS EL PRIMERO;
+					     _selectedGroupIdx = 0;
+					     _selectedGroup = _groups.get(_selectedGroupIdx).getId();
+					}*/
+					else {
+						_selectedGroupIdx++; //SI NO, SELECCIONAMOS EL SIGUIENTE;
+						_selectedGroup = _groups.get(_selectedGroupIdx).getId(); //-> CON ESTO OBTENEMOS EL ID DEL GRUPO 
+						//QUE SE ENCUENTRA EN LA POSICION INDICADA POR _SELECTEDGROUPIDX;
+					}
+					drawBodies(gr);
 					break;
 				}
 				repaint();
@@ -217,10 +229,6 @@ class Viewer extends SimulationViewer {
 		g.drawString("Selected Group: ", 20, getHeight() - (getHeight() - 40));
 	}
 	
-	private void showBodies() {
-		 
-	}
-	
 	private void drawBodies(Graphics2D g) {
 		/* ES: Dibuja todos los cuerpos para los que isVisible(b) devuelve 'true' (ver
 		 * isVisible abajo, devuelve 'true' si el cuerpo pertenece al grupo
@@ -233,7 +241,7 @@ class Viewer extends SimulationViewer {
 		 */
 		
 		
-		Graphics gr = (Graphics)g;
+		Graphics gr = (Graphics)g; //HACEMOS UN CAST PARA LA FUNCIÓN DRAWLINE Y PARA EL MÉTODO FILLOVAL();
 		
 		for(Body b: _bodies) {
 			if(isVisible(b)) {
@@ -241,12 +249,15 @@ class Viewer extends SimulationViewer {
 				Vector2D p = b.getPosition();
 				int x = _centerX + (int)(p.getX() / _scale);
 				int y = _centerY + (int)(p.getY() / _scale);
-				gr.fillOval(x, y, 5, 5);
+				gr.fillOval(x, y, 5, 5); //LA USAMOS PARA RELLENAR EL CUERPO DE COLOR;
+				gr.drawString(b.getId(), x, y);
 
 				if(_showVectors == true) {
+					//COORDENADAS DE LA VELOCIDAD;
 					Vector2D velocidad = b.getVelocity();
 					int xVel2 = _centerX + (int)(velocidad.getX() / _scale);
 					int yVel2 = _centerY + (int)(velocidad.getY() / _scale);
+					//COORDENADAS DE LA FUERZA;
 					Vector2D fuerza = b.getForce();
 				    int xFrce2 = _centerX + (int)(fuerza.getX() / _scale);
 				    int yFrce2 = _centerY + (int)(fuerza.getY() / _scale);
@@ -300,9 +311,7 @@ class Viewer extends SimulationViewer {
 
 	@Override
 	public void addBody(Body b) {
-
 		_bodies.add(b); //-> AÑADIR B A _BODIES
-
 		autoScale();
 		update();
 	}
