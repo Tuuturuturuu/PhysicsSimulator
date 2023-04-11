@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.control.Controller;
@@ -39,7 +40,7 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 	private String[] _headers = { "Key", "Value", "Description" };
 
 	private int _status;
-	private int _selectedLawsIndex;
+	private int _selectedLawsIndex = 0;
 
 	ForceLawsDialog(Frame parent, Controller ctrl) {
 		super(parent, true);
@@ -57,6 +58,7 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		mainPanel.add(createFirstComponent());
 		mainPanel.add(createSecondComponent());
 		mainPanel.add(createThirdComponent());
+		
 		mainPanel.add(createFourthComponent());
 
 		pack();
@@ -91,22 +93,7 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		};
 
 		_dataTableModel.setColumnIdentifiers(_headers);
-		// _dataTableModel = new DefaultTableModel(_headers,3);
-
-//		for (int i = 0; i < _forceLawsInfo.size(); i++) {
-//			JSONObject lawsData = _forceLawsInfo.get(i).getJSONObject("data");
-//			Set<String> keys = lawsData.keySet();
-//
-//			for (String key : keys) {
-//				//System.out.println(key);
-//				//System.out.println(lawsData.getString(key));
-//				String[] data = { key, "", lawsData.getString(key) };
-//				_dataTableModel.addRow(data);
-//
-//			}
-//
-//		}
-
+		
 		JTable table = new JTable(_dataTableModel);
 		JPanel secondComponent = new JPanel();
 		secondComponent.setLayout(new BorderLayout());
@@ -147,10 +134,10 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		// CREAR UN COMBOX Q USE _groupsModel y AÑADIRLO AL PANEL
 		JComboBox<String> cbGroups = new JComboBox<String>(_groupsModel);
 		cbGroups.setMaximumSize(new Dimension(60, 25));
-
-//		cbGroups.addActionListener((e) -> {
-//			updateTableModel(cbGroups.getSelectedIndex());
-//		});
+		//NO HACE FALTA EL ACTION LISTENER DE LOS GRUPOS
+		
+		//UPDATEAMOS LA TABLA PARA QUE SE PINTE CON LOSELECCIONADO POR DEFECTO
+		updateTableModel(cbLaws.getSelectedIndex());
 		
 		thirdComponent.add(laws);
 		thirdComponent.add(cbLaws);
@@ -177,15 +164,18 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 				// CONVIERTE LA INFO DE LA TABLA EN IN JSONOBJECT CON LA CLAVE Y EL VALOR PARA CADA FILA
 				JSONObject jo1 = new JSONObject();
 				for (int i = 0; i < _dataTableModel.getRowCount(); i++) {
-					//jo1.put(_dataTableModel.getValueAt(i, 0).toString(), _dataTableModel.getValueAt(i, 1));
-					jo1.put(_dataTableModel.getValueAt(i, 0).toString(), _dataTableModel.getValueAt(i, 1).toString());
+					
+					if (_dataTableModel.getValueAt(i, 0).toString().equals("c")){
+						JSONArray jsonArray = new JSONArray(_dataTableModel.getValueAt(i, 1).toString());
+						jo1.put("c", jsonArray);
+					}
+					else
+					    jo1.put(_dataTableModel.getValueAt(i, 0).toString(), _dataTableModel.getValueAt(i, 1).toString());
 				}
 				//SE CREA OTRO JSONOBJECT CON UNA CLAVE DATA (CON EL JSON OBJECT ANTERIOR) Y OTRA TYPE (LA CLAVE DEL TYPE SELECCIONADO)
 				JSONObject jo2 = new JSONObject();
 				jo2.put("data", jo1);
 				jo2.put("type", _forceLawsInfo.get(_selectedLawsIndex).getString("type"));
-				
-				System.out.println(jo2);
 				
 				// SE LLAMA AL CONTROLADOR PARA FIJAR ESTA LEY EN EL COMBOBOX Y EL GRUPO 
 				try {
@@ -268,7 +258,11 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 			@Override 
 			public void run() { 
 				_groupsModel.removeAllElements();
-				_groupsModel.addAll(groups.keySet());
+				//_groupsModel.addAll(groups.keySet());  ASI NO, LOS GRUPOS SE AÑADEN DE UNO EN UNO
+				for(BodiesGroup bg : groups.values()) {
+					_groupsModel.addElement(bg.getId());;
+				}
+				
 			}
 			
 		});
@@ -281,7 +275,10 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 			@Override 
 			public void run() { 
 				_groupsModel.removeAllElements();
-				_groupsModel.addAll(groups.keySet());
+			
+				for(BodiesGroup bg : groups.values()) {
+					_groupsModel.addElement(bg.getId());;
+				}
 			}
 			
 		});
