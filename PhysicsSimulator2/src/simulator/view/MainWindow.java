@@ -39,18 +39,10 @@ public class MainWindow extends JFrame {
 		InfoTable iTableGroups = new InfoTable("Groups", new GroupsTableModel(_ctrl));
 		InfoTable iTableBodies = new InfoTable("Bodies", new BodiesTableModel(_ctrl));
 		
-		//CREAR LA TABLA DE GRUPOS Y AÑADIRLA A CONTENT PANEL.
-		//GroupsTableModel groupsTable = new GroupsTableModel(_ctrl);
 		contentPanel.setPreferredSize(new Dimension(500, 250));
-		//JTable gTable = new JTable(iTableGroups);
+		
 		contentPanel.add(iTableGroups); 
 		contentPanel.add(iTableBodies); 
-		
-		//CREAR LA TABLA DE CUERPOS Y AÑADIRLA AL CONTENT PANEL.
-		//BodiesTableModel bodiesTable = new BodiesTableModel(_ctrl);
-		//contentPanel.setPreferredSize(new Dimension(500, 250));
-		//JTable bTable = new JTable(bodiesTable);
-		//contentPanel.add(bTable);
 		
 		addWindowListener(new WindowListener() {
 

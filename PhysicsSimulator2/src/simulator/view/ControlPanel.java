@@ -291,8 +291,8 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 
 			SwingUtilities.invokeLater(() -> run_sim(n - 1));
 
-		} else {
-			Utils.showErrorMsg("Simulation stopped");
+		} 
+		else {
 
 			//ACTIVAR TODOS LOS BOTONES
 			stopButton.setEnabled(true);
