@@ -1,6 +1,6 @@
 package simulator.model;
 
-import java.awt.geom.Arc2D.Double;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 
 		this.fl = fl;
 		this.t = t;
-		this.tiempoActual = 0.0d;
+		this.tiempoActual = 0.0d; 
 		this.map = new HashMap<String, BodiesGroup>();
 		this.listOrderedGroupIds = new ArrayList<String>();
 		this.observerList = new ArrayList<SimulatorObserver>();

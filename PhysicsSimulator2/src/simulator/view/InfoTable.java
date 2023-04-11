@@ -21,7 +21,7 @@ public class InfoTable extends JPanel {
 	}
 
 	private void initGUI() {
-		// CAMBIAR EL LAYOUT DEL PANEL A BORDERLAYOUT
+		// CAMBIAR EL LAYOUT DEL PANEL A BORDERLAYOUT 
 		this.setLayout(new BorderLayout());
 		
 		//AÑADIR UN BORDE CON TITULO AL PANEL CON EL TEXTO _TITLE

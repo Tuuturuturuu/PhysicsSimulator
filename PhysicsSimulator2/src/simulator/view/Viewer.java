@@ -193,6 +193,7 @@ class Viewer extends SimulationViewer {
 
 		// a better graphics object
 		Graphics2D gr = (Graphics2D) g;
+		gr.setPaint(Color.BLACK); //ADDED BY SOPFIA
 		gr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		gr.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
@@ -206,7 +207,6 @@ class Viewer extends SimulationViewer {
 	    g.drawLine(_originX, -_centerY, _originX, _centerY);
 	    // LINEA HORIZONTAL 
 	    g.drawLine(-_centerX, _originY, _centerX, _originY);
-		
 		
 		// draw bodies
 		drawBodies(gr);
@@ -222,11 +222,14 @@ class Viewer extends SimulationViewer {
 	}
 	
 	private void showHelp(Graphics2D g) {
+		
 		g.drawString("h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit \r\n", 10, 15); 
-		g.drawString("l: move right, j: move left, i: move up, m: move down: k: reset \r\n", 10, 15);
-		g.drawString("g: show next group", 10, 15);
-		g.drawString(getRatio(), 20, getHeight() - (getHeight() - 40));
-		g.drawString("Selected Group: ", 20, getHeight() - (getHeight() - 40));
+		g.drawString("g: show next group", 10, 35);
+		g.drawString("l: move right, j: move left, i: move up, m: move down: k: reset \r\n", 10, 55);
+		g.drawString(getRatio(), 10, 75); //y = getHeight() - (getHeight() - 40)
+	
+		g.setColor(Color.BLUE);
+		g.drawString("Selected Group: ", 10, 95); //y = getHeight() - (getHeight() - 40)
 	}
 	
 	private void drawBodies(Graphics2D g) {

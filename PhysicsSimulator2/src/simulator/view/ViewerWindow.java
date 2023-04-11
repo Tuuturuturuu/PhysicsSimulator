@@ -1,12 +1,15 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Map;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -18,26 +21,32 @@ import simulator.model.SimulatorObserver;
 class ViewerWindow extends JFrame implements SimulatorObserver {
 	private Controller _ctrl;
 	private SimulationViewer _viewer;
-	private JFrame _parent;
+	private Frame _parent;
 
-	ViewerWindow(JFrame parent, Controller ctrl) {
+	ViewerWindow(Frame parent, Controller ctrl) { 
 		super("Simulation Viewer");
 		_ctrl = ctrl;
 		_parent = parent;
 		intiGUI();
+		
 		_ctrl.addObserver(this);
 	}
 
 private void intiGUI() {
-	JPanel mainPanel = new JPanel(new BorderLayout());
-	_viewer = new Viewer();
-	JScrollPane scrollPane = new JScrollPane(_viewer);
-	mainPanel.add(scrollPane, BorderLayout.CENTER);
+	JPanel mainPanel = new JPanel();
+	mainPanel.setMinimumSize(new Dimension(200,200));
+	//_viewer = new Viewer();
+	//JScrollPane scrollPane = new JScrollPane(_viewer);
+	//mainPanel.add(scrollPane, BorderLayout.CENTER); LO DE LUCIA
+
+	mainPanel.setLayout(new BorderLayout());
+	mainPanel.add(new JScrollPane(new Viewer(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);	
+	//mainPanel.add(new JLabel("kHW"));
+	setContentPane(mainPanel); 
 	addWindowListener(new WindowListener() {
 
 		@Override
-		public void windowOpened(WindowEvent e) {
-		}
+		public void windowOpened(WindowEvent e) {}
 
 		@Override
 		public void windowClosing(WindowEvent e) { //-> VER SI ESTO ESTA BIEN;
@@ -47,38 +56,34 @@ private void intiGUI() {
 		}
 
 		@Override
-		public void windowClosed(WindowEvent e) {
-		}
+		public void windowClosed(WindowEvent e) {}
 
 		@Override
-		public void windowIconified(WindowEvent e) {
-		}
+		public void windowIconified(WindowEvent e) {}
 
 		@Override
-		public void windowDeiconified(WindowEvent e) {
-		}
+		public void windowDeiconified(WindowEvent e) {}
 
 		@Override
-		public void windowActivated(WindowEvent e) {	
-		}
+		public void windowActivated(WindowEvent e) {}
 
 		@Override
-		public void windowDeactivated(WindowEvent e) {
-		}
+		public void windowDeactivated(WindowEvent e) {}
 		
 	});
-	 
+	
 	pack();
-	if (_parent != null)
-	setLocation(
-	_parent.getLocation().x + _parent.getWidth()/2 - getWidth()/2,
-	_parent.getLocation().y + _parent.getHeight()/2 - getHeight()/2);
+	if (_parent != null) 
+		setLocation(_parent.getLocation().x + _parent.getWidth()/2 - getWidth()/2, 
+				_parent.getLocation().y + _parent.getHeight()/2 - getHeight()/2);
 	setVisible(true);
+	System.out.println("llegamos aqui");
 }
 
 @Override
 public void onAdvance(Map<String, BodiesGroup> groups, double time) { 
 	_viewer.update();	
+	//_viewer.repaint();
 }
 
 @Override
@@ -89,6 +94,7 @@ public void onReset(Map<String, BodiesGroup> groups, double time, double dt) { /
 @Override
 public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) { //TODO
 	for(BodiesGroup g: groups.values()) {
+		
 		_viewer.addGroup(g);
 	}
 }

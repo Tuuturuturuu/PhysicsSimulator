@@ -15,7 +15,7 @@ import simulator.model.SimulatorObserver;
 class GroupsTableModel extends AbstractTableModel implements SimulatorObserver {
 	String[] _header = { "Id", "Force Laws", "Bodies" };
 	List<BodiesGroup> _groups;
-
+	
 	GroupsTableModel(Controller ctrl) {
 		_groups = new ArrayList<>();
 		// REGISTRAR THIS COMO OBSERVADOR
@@ -50,8 +50,10 @@ class GroupsTableModel extends AbstractTableModel implements SimulatorObserver {
 			ret = bg.getForceLawsInfo();
 			break;
 		case 2:
+			String aux = "";
 			for (Body b : bg._bodiesRO)
-				ret = b.getId();// HAY QUE CONCATENAR LOS IDS DE TODOS LOS CUERPOS DEL GROUP, PK AHORA SOLO ESTA MOSTRANDO EL ULTIMO TODO
+							aux += b.getId() + " " ;
+			ret = aux;
 			break;
 		}
 		return ret;

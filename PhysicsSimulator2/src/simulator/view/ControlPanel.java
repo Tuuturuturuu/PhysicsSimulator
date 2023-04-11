@@ -15,6 +15,7 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,7 +40,7 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 	private JButton _quitButton;
 
 	// ATRIBUTOS AÑADIDOS
-	private int _dt = 25000;
+	private int _dt = 2500;
 	private int _steps = 10000;
 	JSpinner stepsSpinner;
 	JTextField dtText;
@@ -103,6 +104,16 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 		dtText.setMinimumSize(new Dimension(80, 30));
 		dtText.setMaximumSize(new Dimension(200, 30));
 		dtText.setPreferredSize(new Dimension(80, 30));	
+		
+		dtText.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				_dt = Integer.parseInt(dtText.getText());
+				
+			}
+			
+		});
 
 		this._toolaBar.add(dtText);
 	}
@@ -111,7 +122,17 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 		stepsSpinner = new JSpinner(new SpinnerNumberModel(_steps, 1, _steps, 100));
 		stepsSpinner.setMinimumSize(new Dimension(80, 30));
 		stepsSpinner.setMaximumSize(new Dimension(200, 30));
-		stepsSpinner.setPreferredSize(new Dimension(80, 30));			
+		stepsSpinner.setPreferredSize(new Dimension(80, 30));
+		
+		stepsSpinner.addChangeListener(new ChangeListener() {
+
+			public void stateChanged(ChangeEvent e) {
+				
+				_steps = Integer.valueOf(stepsSpinner.getValue().toString());
+				
+			}
+			
+		});
 
 		this._toolaBar.add(stepsSpinner);
 	}
@@ -163,7 +184,7 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 		this._toolaBar.add(loadButton);
 	}
 
-	private void createFldButton() {//TODO
+	private void createFldButton() {
 
 		this.fldButton = new JButton();
 		this.fldButton.setToolTipText("Add Force Law");
@@ -176,6 +197,7 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 			public void actionPerformed(ActionEvent e) {
 				if(_fld == null)
 					_fld = new ForceLawsDialog(Utils.getWindow(ControlPanel.this), _ctrl); 
+				
 				_fld.open();
 			}
 			
@@ -212,7 +234,7 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 		this._toolaBar.add(runButton);
 	}
 
-	private void createViewerWindowButton() {//TODO
+	private void createViewerWindowButton() {
 
 		this.viewerWindowButton = new JButton();
 		this.viewerWindowButton.setToolTipText(" Window Viewer ");
@@ -222,10 +244,10 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-
+				
+				ViewerWindow viewer = new ViewerWindow(Utils.getWindow(ControlPanel.this), _ctrl); 				
 			}
-
+			
 		});
 		this._toolaBar.add(viewerWindowButton);
 
@@ -292,24 +314,33 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-		//		SwingUtilities.invokeLater( new Runnable() { 
-		//			@Override 
-		//			public void run() { _ctrl.setDeltaTime(_dt); }
-		//			
-		//		});
+		SwingUtilities.invokeLater( new Runnable() { 
+			@Override 
+			public void run() { _ctrl.setDeltaTime(_dt);  }
+			
+		});
 
 	}
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
 
-		//TODO
+		SwingUtilities.invokeLater( new Runnable() { 
+			@Override 
+			public void run() { _ctrl.setDeltaTime(_dt); }
+			
+		});
 	}
 
 	//METODOS VACIOS
-	
 	@Override
-	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {}
+	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
+		SwingUtilities.invokeLater( new Runnable() { 
+			@Override 
+			public void run() { _ctrl.setDeltaTime(dt); }
+			
+		});
+	}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {}

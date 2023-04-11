@@ -38,7 +38,7 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 	private List<JSONObject> _forceLawsInfo;
 	private String[] _headers = { "Key", "Value", "Description" };
 
-	private int _status;// HAY QUE AÑADIR?? TODO
+	private int _status;
 	private int _selectedLawsIndex;
 
 	ForceLawsDialog(Frame parent, Controller ctrl) {
@@ -52,7 +52,7 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		setTitle("Force Laws Selection");
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-		setContentPane(mainPanel);
+		setContentPane(mainPanel); 
 
 		mainPanel.add(createFirstComponent());
 		mainPanel.add(createSecondComponent());
@@ -64,7 +64,8 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		setResizable(false);
 		setVisible(false);
 	}
-
+	
+	//FIRST COMPONENT: TEXTFIELD CON LA INFO DEL PRINCIPIO
 	public JTextField createFirstComponent() {
 
 		JTextField jtfText = new JTextField(
@@ -73,13 +74,13 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		jtfText.setEditable(false);
 		return jtfText;
 	}
-
+	
+	//SECOND COMPONENT: TABLA
 	public JPanel createSecondComponent() {
 		// _forceLawsInfo SE USARA PARA ESTABLECER LA INFO. EN LA TABLA
 		_forceLawsInfo = _ctrl.getForceLawsInfo();
 
 		// CREAR UN JTABLE QUE USE _dataTableModel, Y AÑADIRLA AL PANEL
-
 		_dataTableModel = new DefaultTableModel() {
 
 			@Override
@@ -92,19 +93,19 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		_dataTableModel.setColumnIdentifiers(_headers);
 		// _dataTableModel = new DefaultTableModel(_headers,3);
 
-		for (int i = 0; i < _forceLawsInfo.size(); i++) {
-			JSONObject lawsData = _forceLawsInfo.get(i).getJSONObject("data");
-			Set<String> keys = lawsData.keySet();
-
-			for (String key : keys) {
-//				System.out.println(key);
-//				System.out.println(lawsData.getString(key));
-				String[] data = { key, "", lawsData.getString(key) };
-				_dataTableModel.addRow(data);
-
-			}
-
-		}
+//		for (int i = 0; i < _forceLawsInfo.size(); i++) {
+//			JSONObject lawsData = _forceLawsInfo.get(i).getJSONObject("data");
+//			Set<String> keys = lawsData.keySet();
+//
+//			for (String key : keys) {
+//				//System.out.println(key);
+//				//System.out.println(lawsData.getString(key));
+//				String[] data = { key, "", lawsData.getString(key) };
+//				_dataTableModel.addRow(data);
+//
+//			}
+//
+//		}
 
 		JTable table = new JTable(_dataTableModel);
 		JPanel secondComponent = new JPanel();
@@ -113,17 +114,15 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		return secondComponent;
 	}
 
+	//TERCERA COMPONENTE: TEXTFIELDS Y COMBOBOX DE FORCE LAWS Y GROUPS	
 	public JPanel createThirdComponent() {
 		JPanel thirdComponent = new JPanel();
 		thirdComponent.setLayout(new BoxLayout(thirdComponent, BoxLayout.X_AXIS));
-
+		
+		//FORCE LAWSS
 		JTextField laws = new JTextField("Force Law: ");
 		laws.setMaximumSize(new Dimension(75, 25));
 		laws.setEditable(false);
-
-		JTextField groups = new JTextField("Group: ");
-		groups.setMaximumSize(new Dimension(55, 25));
-		groups.setEditable(false);
 
 		_lawsModel = new DefaultComboBoxModel<>();
 
@@ -137,6 +136,11 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		cbLaws.addActionListener((e) -> {
 			updateTableModel(cbLaws.getSelectedIndex());
 		});
+		
+		//GROUPS
+		JTextField groups = new JTextField("Group: ");
+		groups.setMaximumSize(new Dimension(55, 25));
+		groups.setEditable(false);
 
 		_groupsModel = new DefaultComboBoxModel<>();
 
@@ -144,9 +148,9 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		JComboBox<String> cbGroups = new JComboBox<String>(_groupsModel);
 		cbGroups.setMaximumSize(new Dimension(60, 25));
 
-		cbGroups.addActionListener((e) -> {
-			updateTableModel(cbGroups.getSelectedIndex());
-		});
+//		cbGroups.addActionListener((e) -> {
+//			updateTableModel(cbGroups.getSelectedIndex());
+//		});
 		
 		thirdComponent.add(laws);
 		thirdComponent.add(cbLaws);
@@ -156,7 +160,8 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		thirdComponent.setMinimumSize(new Dimension(30, 100));
 		return thirdComponent;
 	}
-
+	
+	//CUARTA COMPONENTE: BOTONES CANCEL Y OK
 	public JPanel createFourthComponent() {
 
 		JPanel fourthComponent = new JPanel();
@@ -169,34 +174,29 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				// convierte la información en la tabla en un JSONObject que incluye la
-				// clave y el valor para cada fila en la tabla
+				// CONVIERTE LA INFO DE LA TABLA EN IN JSONOBJECT CON LA CLAVE Y EL VALOR PARA CADA FILA
 				JSONObject jo1 = new JSONObject();
 				for (int i = 0; i < _dataTableModel.getRowCount(); i++) {
-					jo1.put(_dataTableModel.getValueAt(i, 0).toString(), _dataTableModel.getValueAt(i, 1));
+					//jo1.put(_dataTableModel.getValueAt(i, 0).toString(), _dataTableModel.getValueAt(i, 1));
+					jo1.put(_dataTableModel.getValueAt(i, 0).toString(), _dataTableModel.getValueAt(i, 1).toString());
 				}
-				// crea otro JSONObject que tiene una clave llamada
-				// “data” cuyo valor es el JSONObject del punto anterior y una clave “type” que
-				// es igual a la clave
-				// type de la ley seleccionada, es decir,
+				//SE CREA OTRO JSONOBJECT CON UNA CLAVE DATA (CON EL JSON OBJECT ANTERIOR) Y OTRA TYPE (LA CLAVE DEL TYPE SELECCIONADO)
 				JSONObject jo2 = new JSONObject();
 				jo2.put("data", jo1);
 				jo2.put("type", _forceLawsInfo.get(_selectedLawsIndex).getString("type"));
-				// llama al controlador para fijar esta ley en el grupo seleccionado en el
-				// combobox correspondiente
 				
-//				System.out.println(jo2);
+				System.out.println(jo2);
 				
+				// SE LLAMA AL CONTROLADOR PARA FIJAR ESTA LEY EN EL COMBOBOX Y EL GRUPO 
 				try {
 					_ctrl.setForcesLaws(_groupsModel.getSelectedItem().toString(), jo2);
 				}
-				catch (Exception e1){
+				catch (Exception e1){//SI ALGO FALLA MOSTRAMOS UN MENSAJE DE ERROR
 					Utils.showErrorMsg("An error has occured");
 				}
 
 				_status = 1;
 				ForceLawsDialog.this.setVisible(false);
-
 			}
 		});
 
@@ -224,7 +224,7 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		if (_groupsModel.getSize() == 0) {
 			return _status;
 		}
-
+		
 		if (getParent() != null)
 			setLocation(getParent().getLocation().x + getParent().getWidth() / 2 - getWidth() / 2,
 					getParent().getLocation().y + getParent().getHeight() / 2 - getHeight() / 2);
@@ -249,37 +249,50 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		}
 	}
 
-	// CUALES TODO PREGUNTARSELO A GORDILLO
 	@Override
-	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-	}
+	public void onAdvance(Map<String, BodiesGroup> groups, double time) {}
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-		_groupsModel.removeAllElements();
+		SwingUtilities.invokeLater( new Runnable() { 
+			@Override 
+			public void run() { _groupsModel.removeAllElements(); }
+			
+		});
+		
 	}
 
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		_groupsModel.removeAllElements();
-		_groupsModel.addAll(groups.keySet());
+		SwingUtilities.invokeLater( new Runnable() { 
+			@Override 
+			public void run() { 
+				_groupsModel.removeAllElements();
+				_groupsModel.addAll(groups.keySet());
+			}
+			
+		});
+		
 	}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
-		_groupsModel.removeAllElements();
-		_groupsModel.addAll(groups.keySet());
+		SwingUtilities.invokeLater( new Runnable() { 
+			@Override 
+			public void run() { 
+				_groupsModel.removeAllElements();
+				_groupsModel.addAll(groups.keySet());
+			}
+			
+		});
 	}
 
 	@Override
-	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
-	}
+	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {}
 
 	@Override
-	public void onDeltaTimeChanged(double dt) {
-	}
+	public void onDeltaTimeChanged(double dt) {}
 
 	@Override
-	public void onForceLawsChanged(BodiesGroup g) {
-	}
+	public void onForceLawsChanged(BodiesGroup g) {}
 }
