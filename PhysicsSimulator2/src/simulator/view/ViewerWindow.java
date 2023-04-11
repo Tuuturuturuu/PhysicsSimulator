@@ -35,13 +35,12 @@ class ViewerWindow extends JFrame implements SimulatorObserver {
 private void intiGUI() {
 	JPanel mainPanel = new JPanel();
 	mainPanel.setMinimumSize(new Dimension(200,200));
-	//_viewer = new Viewer();
-	//JScrollPane scrollPane = new JScrollPane(_viewer);
-	//mainPanel.add(scrollPane, BorderLayout.CENTER); LO DE LUCIA
+	
+	_viewer = new Viewer();
 
 	mainPanel.setLayout(new BorderLayout());
-	mainPanel.add(new JScrollPane(new Viewer(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);	
-	//mainPanel.add(new JLabel("kHW"));
+	mainPanel.add(new JScrollPane(_viewer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);	
+	
 	setContentPane(mainPanel); 
 	addWindowListener(new WindowListener() {
 
@@ -52,7 +51,7 @@ private void intiGUI() {
 		public void windowClosing(WindowEvent e) { //-> VER SI ESTO ESTA BIEN;
 			Window window = e.getWindow();
 	        window.removeWindowListener(this);
-	     //_ctrl.removeObserver(this);
+	        //_ctrl.removeObserver(this);
 		}
 
 		@Override
@@ -94,7 +93,6 @@ public void onReset(Map<String, BodiesGroup> groups, double time, double dt) { /
 @Override
 public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) { //TODO
 	for(BodiesGroup g: groups.values()) {
-		
 		_viewer.addGroup(g);
 	}
 }

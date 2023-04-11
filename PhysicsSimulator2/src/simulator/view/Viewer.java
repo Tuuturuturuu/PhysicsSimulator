@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -143,20 +144,18 @@ class Viewer extends SimulationViewer {
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyChar()) {
 				case '-':
-					_scale = _scale * 1.1;
-					repaint();
+					_scale *= 1.1;
 					break;
 				case '+':
 					_scale = Math.max(1000.0, _scale / 1.1);
-					repaint();
 					break;
 				case '=':
 					autoScale();
-					repaint();
 					break;
 
 				default:
 				}
+				repaint();
 			}
 		});
 
@@ -203,10 +202,17 @@ class Viewer extends SimulationViewer {
 
 		//LA CRUZ ROJA DEL CENTRO 
 		gr.setColor(Color.RED);
+		
 		// LINEA VERTICAL 
-	    g.drawLine(_originX, -_centerY, _originX, _centerY);
+	    //g.drawLine(_originX, -_centerY, _originX, _centerY);
+		Line2D lv = new Line2D.Float(_centerX, _centerY - 5, _centerX, _centerY + 5);
+		gr.draw(lv);
+		
 	    // LINEA HORIZONTAL 
-	    g.drawLine(-_centerX, _originY, _centerX, _originY);
+		//g.drawLine(-_centerX, _originY, _centerX, _originY);
+		Line2D lh = new Line2D.Float(_centerX - 5, _centerY, _centerX + 5, _centerY);
+		gr.draw(lh);
+	    
 		
 		// draw bodies
 		drawBodies(gr);
@@ -247,15 +253,16 @@ class Viewer extends SimulationViewer {
 		Graphics gr = (Graphics)g; //HACEMOS UN CAST PARA LA FUNCIÓN DRAWLINE Y PARA EL MÉTODO FILLOVAL();
 		
 		for(Body b: _bodies) {
-			if(isVisible(b)) {
-				g.setColor(_gColor.get(b.getgId()));
+			if(isVisible(b)) { //IS VISIBLE DEVUELVE TRUE SI EL CUERPO PERTENECE AL GRUPO SELECCIONADO
+				gr.setColor(_gColor.get(b.getgId()));
 				Vector2D p = b.getPosition();
 				int x = _centerX + (int)(p.getX() / _scale);
 				int y = _centerY + (int)(p.getY() / _scale);
-				gr.fillOval(x, y, 5, 5); //LA USAMOS PARA RELLENAR EL CUERPO DE COLOR;
+				
+				gr.fillOval(x, y, 5, 5); //LA USAMOS PARA RELLENAR EL CUERPO DE COLOR
 				gr.drawString(b.getId(), x, y);
 
-				if(_showVectors == true) {
+				if(_showVectors) {
 					//COORDENADAS DE LA VELOCIDAD;
 					Vector2D velocidad = b.getVelocity();
 					int xVel2 = _centerX + (int)(velocidad.getX() / _scale);
@@ -265,11 +272,11 @@ class Viewer extends SimulationViewer {
 				    int xFrce2 = _centerX + (int)(fuerza.getX() / _scale);
 				    int yFrce2 = _centerY + (int)(fuerza.getY() / _scale);
 				    
+					//LA FLECHA DE LA VELOCIDAD:
 				    
-					//LA FLECHA DE LA VELOCIDAD;
-					drawLineWithArrow(gr, _centerX, _centerY, xVel2, yVel2, 2, 2, Color.GREEN, Color.GREEN);
-					//LA FLECHA DE LA FUERZA;
-					drawLineWithArrow(gr, _centerX, _centerY, xFrce2, yFrce2, 2, 2, Color.RED, Color.RED);
+					//drawLineWithArrow(gr, _centerX, _centerY, xVel2, yVel2, 2, 2, Color.GREEN, Color.GREEN);
+					//LA FLECHA DE LA FUERZA:
+					//drawLineWithArrow(gr, _centerX, _centerY, xFrce2, yFrce2, 2, 2, Color.RED, Color.RED);
 				 
 				}
 			}
@@ -306,7 +313,7 @@ class Viewer extends SimulationViewer {
 		for(Body b: g._bodiesRO) { //-> _BODIESRO ES LA LISTA DE BODIES;
 			_bodies.add(b); //-> AÑADE LOS CUERPOS A _BODIES;
 		}
-		_groups.add(g); //-> AÑADIR G A _GROUPS;
+		
 		_gColor.put(g.getId(), _colorGen.nextColor()); // assign color to group
 		autoScale();
 		update();
