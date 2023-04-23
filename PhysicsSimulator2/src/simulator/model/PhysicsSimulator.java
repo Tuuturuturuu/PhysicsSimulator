@@ -1,6 +1,5 @@
 package simulator.model;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,7 +9,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class PhysicsSimulator implements Observable<SimulatorObserver>{
+public class PhysicsSimulator implements Observable<SimulatorObserver> {
 
 	private Double t;
 	private ForceLaws fl;
@@ -19,31 +18,31 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 	private Map<String, BodiesGroup> map;
 	private List<String> listOrderedGroupIds;
 	private List<SimulatorObserver> observerList;
-	
+
 	private Map<String, BodiesGroup> _groupsRO;
-	
+
 	public PhysicsSimulator(ForceLaws fl, Double t) {
 		if (t == null || fl == null)
 			throw new IllegalArgumentException("");
 
 		this.fl = fl;
 		this.t = t;
-		this.tiempoActual = 0.0d; 
+		this.tiempoActual = 0.0d;
 		this.map = new HashMap<String, BodiesGroup>();
 		this.listOrderedGroupIds = new ArrayList<String>();
 		this.observerList = new ArrayList<SimulatorObserver>();
-		
+
 		this._groupsRO = Collections.unmodifiableMap(map);
 	}
 
 	public void advance() {
 
 		for (BodiesGroup bg : map.values()) {
-			bg.advance(t); // TIEMPO REAL POR PASO
+			bg.advance(t);
 		}
-		// INCREMENTA ELTIEMPO ACTUAL EN T SEGUNDOS
+
 		this.tiempoActual += t;
-		
+
 		for (SimulatorObserver o : observerList)
 			o.onAdvance(_groupsRO, tiempoActual);
 	}
@@ -56,10 +55,9 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 			throw new IllegalArgumentException("Bodies Group already has that id");
 		else {
 			map.put(id, bodiesGroup);
-			// SE AÑADEN A LA LISTA LOS ID DE LOS GRUOPOS EN ORDEN SEGUN SE CREAN PARA Q
-			// ESTEN ORDENADOS POR ORDEN DE INSERCION
+
 			listOrderedGroupIds.add(id);
-			
+
 			for (SimulatorObserver o : observerList)
 				o.onGroupAdded(_groupsRO, bodiesGroup);
 		}
@@ -73,7 +71,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 			throw new IllegalArgumentException("Illegal parameter: yataBodies Group doesnt exist in map");
 		else {
 			map.get(b.getgId()).addBody(b);
-			
+
 			for (SimulatorObserver o : observerList)
 				o.onBodyAdded(_groupsRO, b);
 		}
@@ -87,33 +85,32 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 
 		else {
 			map.get(id).setForceLaws(f);
-			
-			
+
 			for (SimulatorObserver o : observerList)
 				o.onForceLawsChanged(map.get(id));
 		}
 
 	}
-	
+
 	public void setDeltaTime(double dt) {
-		
-		if(dt < 0)
+
+		if (dt < 0)
 			throw new IllegalArgumentException("Delta time introduced is negative");
-		
-		this.t = dt; 
-		
+
+		this.t = dt;
+
 		for (SimulatorObserver o : observerList)
 			o.onDeltaTimeChanged(t);
 	}
-	
+
 	public void reset() {
 		map.clear();
-		
+
 		this.tiempoActual = 0.0d;
-		
+
 		for (SimulatorObserver o : observerList)
 			o.onReset(_groupsRO, tiempoActual, t);
-		
+
 	}
 
 	public JSONObject getState() {
@@ -139,20 +136,20 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 
 	@Override
 	public void addObserver(SimulatorObserver o) {
-		
-		if(observerList.contains(o))
+
+		if (observerList.contains(o))
 			throw new IllegalArgumentException("Observer already added to the list");
-		
+
 		observerList.add(o);
 		o.onRegister(_groupsRO, tiempoActual, t);
 	}
 
 	@Override
 	public void removeObserver(SimulatorObserver o) {
-		if(!observerList.contains(o))
+		if (!observerList.contains(o))
 			throw new IllegalArgumentException("Observer not added to the list");
-		
+
 		observerList.remove(o);
-		
+
 	}
 }

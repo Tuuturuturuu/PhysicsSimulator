@@ -6,13 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONObject; 
+import org.json.JSONObject;
 
-public class BodiesGroup implements Iterable<Body>{
+public class BodiesGroup implements Iterable<Body> {
 	private String id;
 	private ForceLaws laws;
 	private List<Body> bodyList;
-	
+
 	public List<Body> _bodiesRO;
 
 	public BodiesGroup(String id, ForceLaws laws) {
@@ -33,14 +33,12 @@ public class BodiesGroup implements Iterable<Body>{
 	public String getId() {
 		return this.id;
 	}
-	
-	public String getForceLawsInfo(){
-		//COMO QUE HAY QUE RECORRER AQUI EL GRUPO DE BODIESGROUP G? PARA HACER EL QUE?
-		//VA AQUI?? TODO
+
+	public String getForceLawsInfo() {
 		return laws.toString();
 	}
-	
-	void setForceLaws (ForceLaws fl) {
+
+	void setForceLaws(ForceLaws fl) {
 		if (fl == null)
 			throw new IllegalArgumentException("Bodies Group received null Force Law");
 
@@ -58,7 +56,7 @@ public class BodiesGroup implements Iterable<Body>{
 			bodyList.add(b);
 	}
 
-	void advance(double dt) { // DT = TIEMPO REAL POR PASO
+	void advance(double dt) {
 		if (dt <= 0)
 			throw new IllegalArgumentException("Illegal parameter: Time received is negative");
 
@@ -89,17 +87,8 @@ public class BodiesGroup implements Iterable<Body>{
 	public String toString() {
 		return getState().toString();
 	}
-	
+
 	public Iterator<Body> iterator() {
 		return this._bodiesRO.iterator();
-		/*return new Iterator<Body>() {
-			Iterator<Body> it = bodyList.iterator();
-			@Override
-			public Body next() { return it.next(); }
-			@Override
-			public boolean hasNext() { return it.hasNext(); }
-			@Override
-			public void remove() { throw new UnsupportedOperationException("..."); }
-			};*/
 	}
 }

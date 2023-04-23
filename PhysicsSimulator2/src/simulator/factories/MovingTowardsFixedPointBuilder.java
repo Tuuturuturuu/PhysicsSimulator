@@ -19,7 +19,6 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
 	@Override
 	protected ForceLaws createInstance(JSONObject data) {
-		// System.out.println(data);
 
 		if (data.isEmpty())
 			return new MovingTowardsFixedPoint(_c, _g);
@@ -42,17 +41,17 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
 		return new MovingTowardsFixedPoint(c, g);
 	}
-	
+
 	public JSONObject getInfo() {
-		
+
 		JSONObject ret = super.getInfo();
 		JSONObject data = new JSONObject();
-		
+
 		data.put("c", "the point towards which bodies move (e.g., [100.0,50.0])");
 		data.put("g", "the length of the acceleration vector (a number)");
-		
-		ret.put("data",data);
+
+		ret.put("data", data);
 		return ret;
-}
+	}
 
 }

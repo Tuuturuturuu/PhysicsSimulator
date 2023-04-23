@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableModel;
 
+@SuppressWarnings("serial")
 public class InfoTable extends JPanel {
 	String _title;
 	TableModel _tableModel;
@@ -21,17 +22,15 @@ public class InfoTable extends JPanel {
 	}
 
 	private void initGUI() {
-		// CAMBIAR EL LAYOUT DEL PANEL A BORDERLAYOUT 
+
 		this.setLayout(new BorderLayout());
-		
-		//AÑADIR UN BORDE CON TITULO AL PANEL CON EL TEXTO _TITLE
-		//(LE PASAs AL createTitleBorder(ColoryGrosor, TITULO, IZQ, ARRIBA)
+
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 2), _title,
 				TitledBorder.LEFT, TitledBorder.TOP));
-		
-		// AÑADIR UN JTABLE (CON BARRA DE DESPLAZAMIENTO VERTICAL) QUE USE _tableModel
+
 		JTable table = new JTable(_tableModel);
-		//USAS EL SCROLLPANE PARA EL DESPLAZAMIENTO, METIENDOLE EL JTABLE CREADO
-		this.add(new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+
+		this.add(new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 	}
 }

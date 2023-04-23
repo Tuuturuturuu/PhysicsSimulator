@@ -12,6 +12,7 @@ import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
+@SuppressWarnings("serial")
 class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
 	String[] _header = { "Id", "gId", "Mass", "Velocity", "Position", "Force" };
 	List<Body> _bodies;
@@ -25,12 +26,12 @@ class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
 	public int getRowCount() {
 		return _bodies.size();
 	}
-	
+
 	@Override
 	public String getColumnName(int col) {
 		return _header[col];
 	}
-	
+
 	@Override
 	public int getColumnCount() {
 		return this._header.length;
@@ -96,32 +97,32 @@ class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
 
 			@Override
 			public void run() {
-				for(BodiesGroup b : groups.values()) {
-					for(Body bd: b) {
+				for (BodiesGroup b : groups.values()) {
+					for (Body bd : b) {
 						_bodies.add(bd);
 					}
 				}
 				fireTableStructureChanged();
 			}
-			
+
 		});
 	}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				for(Body bd: g) {
+				for (Body bd : g) {
 					_bodies.add(bd);
 				}
 				fireTableStructureChanged();
 			}
-			
+
 		});
-		
+
 	}
 
 	@Override
@@ -130,8 +131,6 @@ class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
 
 			@Override
 			public void run() {
-				
-				_bodies.add(b);//TODO ES ASI?
 				fireTableDataChanged();
 			}
 
@@ -139,8 +138,10 @@ class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
 	}
 
 	@Override
-	public void onForceLawsChanged(BodiesGroup g) {}
+	public void onForceLawsChanged(BodiesGroup g) {
+	}
 
 	@Override
-	public void onDeltaTimeChanged(double dt) {}
+	public void onDeltaTimeChanged(double dt) {
+	}
 }

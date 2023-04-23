@@ -9,16 +9,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
+
 import simulator.misc.Vector2D;
 import simulator.model.BodiesGroup;
 import simulator.model.Body;
@@ -29,35 +27,24 @@ class Viewer extends SimulationViewer {
 	private static final int _WIDTH = 500;
 	private static final int _HEIGHT = 500;
 
-	// (_centerX,_centerY) is used as the origin when drawing
-	// the bodies
 	private int _centerX;
 	private int _centerY;
 
-	// values used to shift the actual origin (the middle of
-	// the window), when calculating (_centerX,_centerY)
 	private int _originX = 0;
 	private int _originY = 0;
 
-	// the scale factor, used to reduce the bodies coordinates
-	// to the size of the component
 	private double _scale = 1.0;
 
-	// indicates if the help message should be shown
 	private boolean _showHelp = true;
 
-	// indicates if the position/velocity vectors should be shown
 	private boolean _showVectors = true;
 
-	// the list bodies and groups
 	private List<Body> _bodies;
 	private List<BodiesGroup> _groups;
 
-	// a color generator, and a map that assigns colors to groups
 	private ColorsGenerator _colorGen;
 	private Map<String, Color> _gColor;
 
-	// the index and Id of the selected group, -1 and null means all groups
 	private int _selectedGroupIdx = -1;
 	private String _selectedGroup = null;
 
@@ -67,26 +54,18 @@ class Viewer extends SimulationViewer {
 
 	private void initGUI() {
 
-		// add a border
 		setBorder(BorderFactory.createLineBorder(Color.black, 2));
 
-		// initialize the color generator, and the map, that we use
-		// assign colors to groups
 		_colorGen = new ColorsGenerator();
 		_gColor = new HashMap<>();
 
-		// initialize the lists of bodies and groups
 		_bodies = new ArrayList<>();
 		_groups = new ArrayList<>();
 
-		// The preferred and minimum size of the components
 		setMinimumSize(new Dimension(_WIDTH, _HEIGHT));
 		setPreferredSize(new Dimension(_WIDTH, _HEIGHT));
 
-		// add a key listener to handle the user actions
 		addKeyListener(new KeyListener() {
-
-			Graphics2D gr;
 
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -120,12 +99,11 @@ class Viewer extends SimulationViewer {
 				case 'g':
 
 					_selectedGroupIdx++;
-					if (_selectedGroupIdx == _groups.size()) { // -> SI ES IGUAL A GROUP.SIZE LO CAMBIAMOS A -1;
-						_selectedGroupIdx = -1; // -> PARA COMENZAR DE NUEVO Y ENSEÑAMOS TODOS LOS GRUPOS;
+					if (_selectedGroupIdx == _groups.size()) {
+						_selectedGroupIdx = -1;
 						_selectedGroup = null;
 					} else
-						_selectedGroup = _groups.get(_selectedGroupIdx).getId(); // -> CON ESTO OBTENEMOS EL ID DEL
-																					// GRUPO
+						_selectedGroup = _groups.get(_selectedGroupIdx).getId();
 
 					break;
 				}
@@ -186,33 +164,24 @@ class Viewer extends SimulationViewer {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		// a better graphics object
 		Graphics2D gr = (Graphics2D) g;
-		gr.setPaint(Color.BLACK); // ADDED BY SOPFIA
+		gr.setPaint(Color.BLACK);
 		gr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		gr.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		// calculate the center
 		_centerX = getWidth() / 2 - _originX;
 		_centerY = getHeight() / 2 - _originY;
 
-		// LA CRUZ ROJA DEL CENTRO
 		gr.setColor(Color.RED);
 
-		// LINEA VERTICAL
-		// g.drawLine(_originX, -_centerY, _originX, _centerY);
 		Line2D lv = new Line2D.Float(_centerX, _centerY - 5, _centerX, _centerY + 5);
 		gr.draw(lv);
 
-		// LINEA HORIZONTAL
-		// g.drawLine(-_centerX, _originY, _centerX, _originY);
 		Line2D lh = new Line2D.Float(_centerX - 5, _centerY, _centerX + 5, _centerY);
 		gr.draw(lh);
 
-		// draw bodies
 		drawBodies(gr);
 
-		// show help if needed
 		if (_showHelp) {
 			showHelp(gr);
 		}
@@ -228,64 +197,41 @@ class Viewer extends SimulationViewer {
 		g.drawString("h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit \r\n", 10, 15);
 		g.drawString("g: show next group", 10, 35);
 		g.drawString("l: move right, j: move left, i: move up, m: move down: k: reset \r\n", 10, 55);
-		g.drawString(getRatio(), 10, 75); // y = getHeight() - (getHeight() - 40)
+		g.drawString(getRatio(), 10, 75);
 
 		g.setColor(Color.BLUE);
 		if (_selectedGroup == null)
 			g.drawString("Selected Group: all", 10, 95);
 		else
-			g.drawString("Selected Group: " + _selectedGroup, 10, 95); // y = getHeight() - (getHeight() - 40)
+			g.drawString("Selected Group: " + _selectedGroup, 10, 95);
 	}
 
 	private void drawBodies(Graphics2D g) {
 
 		for (Body b : _bodies) {
-			if (isVisible(b)) { // IS VISIBLE DEVUELVE TRUE SI EL CUERPO PERTENECE AL GRUPO SELECCIONADO
+			if (isVisible(b)) {
 
 				Vector2D p = b.getPosition();
 				int x = _centerX + (int) (p.getX() / _scale);
-				int y = _centerY + (int) (p.getY() / _scale);
+				int y = _centerY - (int) (p.getY() / _scale);
 
 				if (_showVectors) {
 					Vector2D v = b.getVelocity();
 					Vector2D f = b.getForce();
-					System.out.println(x + ((int) v.direction().getX() * 25));
-					System.out.println(y + ((int) v.direction().getY() * 25));
 
-					// FLECHA VELOCIDAD
 					drawLineWithArrow((Graphics) g, x, y, x + (int) (v.direction().getX() * 25),
-							y + (int) (v.direction().getY() * 25), 4, 4, Color.GREEN, Color.GREEN);
+							y - (int) (v.direction().getY() * 25), 4, 4, Color.GREEN, Color.GREEN);
 
-					// FLECHA FUERZA
 					drawLineWithArrow((Graphics) g, x, y, x + (int) (f.direction().getX() * 25),
-							y + (int) (f.direction().getY() * 25), 4, 4, Color.RED, Color.RED);
+							y - (int) (f.direction().getY() * 25), 4, 4, Color.RED, Color.RED);
 
 				}
 
-				// IMPRIMIMOS EL CUERPO EN EL COLOR DE SU GRUPO
 				g.setColor(_gColor.get(b.getgId()));
-				g.fillOval(x - 5, y - 5, 10, 10); // LA USAMOS PARA RELLENAR EL CUERPO DE COLOR
+				g.fillOval(x - 5, y - 5, 10, 10);
 
-				// IMPRIMIMOS EL ID EN NEGRO
 				g.setColor(Color.BLACK);
 				g.drawString(b.getId(), x - 7, y - 12);
-
-				/*
-				 * if(_showVectors) { //COORDENADAS DE LA VELOCIDAD; Vector2D velocidad =
-				 * b.getVelocity(); int xVel2 = _centerX + (int)(velocidad.getX() / _scale); int
-				 * yVel2 = _centerY + (int)(velocidad.getY() / _scale); //COORDENADAS DE LA
-				 * FUERZA; Vector2D fuerza = b.getForce(); int xFrce2 = _centerX +
-				 * (int)(fuerza.getX() / _scale); int yFrce2 = _centerY + (int)(fuerza.getY() /
-				 * _scale);
-				 * 
-				 * LA FLECHA DE LA VELOCIDAD:
-				 * 
-				 * drawLineWithArrow(gr, _centerX, _centerY, xVel2, yVel2, 2, 2, Color.GREEN,
-				 * Color.GREEN); //LA FLECHA DE LA FUERZA: //drawLineWithArrow(gr, _centerX,
-				 * _centerY, xFrce2, yFrce2, 2, 2, Color.RED, Color.RED);
-				 * 
-				 * }
-				 */
 			}
 		}
 	}
@@ -294,7 +240,6 @@ class Viewer extends SimulationViewer {
 		return _selectedGroup == null || _selectedGroup.equals(b.getgId());
 	}
 
-	// calculates a value for scale such that all visible bodies fit in the window
 	private void autoScale() {
 
 		double max = 1.0;
@@ -317,7 +262,7 @@ class Viewer extends SimulationViewer {
 			_bodies.add(b);
 		}
 
-		_gColor.put(g.getId(), _colorGen.nextColor()); // assign color to group
+		_gColor.put(g.getId(), _colorGen.nextColor());
 		autoScale();
 		update();
 	}
@@ -334,7 +279,7 @@ class Viewer extends SimulationViewer {
 		_groups.clear();
 		_bodies.clear();
 		_gColor.clear();
-		_colorGen.reset(); // reset the color generator
+		_colorGen.reset();
 		_selectedGroupIdx = -1;
 		_selectedGroup = null;
 		update();
@@ -345,9 +290,6 @@ class Viewer extends SimulationViewer {
 		repaint();
 	}
 
-	// This method draws a line from (x1,y1) to (x2,y2) with an arrow.
-	// The arrow is of height h and width w.
-	// The last two arguments are the colors of the arrow and the line
 	private void drawLineWithArrow(Graphics g, int x1, int y1, int x2, int y2, int w, int h, Color lineColor,
 			Color arrowColor) {
 

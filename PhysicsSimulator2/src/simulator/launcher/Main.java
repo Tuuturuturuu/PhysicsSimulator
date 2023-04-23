@@ -34,7 +34,6 @@ import simulator.control.Controller;
 public class Main {
 
 	// default values for some parameters
-	//
 	private final static Integer _stepsDefaultValue = 150;
 	private final static Double _dtimeDefaultValue = 2500.0;
 	private final static String _forceLawsDefaultValue = "nlug";
@@ -54,13 +53,11 @@ public class Main {
 
 	private static void initFactories() {
 
-		// INICIALIZAR LA FACTORIA DE BODIES
 		ArrayList<Builder<Body>> bodyBuilders = new ArrayList<>();
 		bodyBuilders.add(new MovingBodyBuilder());
 		bodyBuilders.add(new StationaryBodyBuilder());
 		_bodyFactory = new BuilderBasedFactory<Body>(bodyBuilders);
 
-		// INICIALIZAR LA FACTORIA DE FORCELAWS
 		ArrayList<Builder<ForceLaws>> forceLawsBuilders = new ArrayList<>();
 		forceLawsBuilders.add(new NewtonUniversalGravitationBuilder());
 		forceLawsBuilders.add(new MovingTowardsFixedPointBuilder());
@@ -74,24 +71,18 @@ public class Main {
 		//
 		Options cmdLineOptions = buildOptions();
 
-		// parse the command line as provided in args
-		//
 		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parseHelpOption(line, cmdLineOptions);
-			
+
 			parseModeOption(line);
 			parseInFileOption(line);
 			parseDeltaTimeOption(line);
 			parseForceLawsOption(line);
 			parseOutFileOption(line);
 			parseStepsOption(line);
-			
 
-			// if there are some remaining arguments, then something wrong is
-			// provided in the command line!
-			//
 			String[] remaining = line.getArgs();
 			if (remaining.length > 0) {
 				String error = "Illegal arguments:";
@@ -110,36 +101,30 @@ public class Main {
 	private static Options buildOptions() {
 		Options cmdLineOptions = new Options();
 
-		// help
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message.").build());
 
-		// input file
 		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("Bodies JSON input file.").build());
 
-		// delta-time
 		cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg()
 				.desc("A double representing actual time, in seconds, per simulation step. Default value: "
 						+ _dtimeDefaultValue + ".")
 				.build());
 
-		// mode
 		cmdLineOptions
 				.addOption(Option.builder("m").longOpt("mode").hasArg()
 						.desc("Execution Mode. Possible values: 'batch' (Batch\r\n"
 								+ "mode), 'gui' (Graphical User Interface mode).\r\n" + "Default value: 'gui'.")
 						.build());
 
-		// force laws
 		cmdLineOptions.addOption(Option.builder("fl").longOpt("force-laws").hasArg()
 				.desc("Force laws to be used in the simulator. Possible values: "
 						+ factoryPossibleValues(_forceLawsFactory) + ". Default value: '" + _forceLawsDefaultValue
 						+ "'.")
 				.build());
-		// output file
+
 		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg()
 				.desc("Output file, where output is written. Default\n" + "value: the standard output.").build());
 
-		// steps
 		cmdLineOptions.addOption(Option.builder("s").longOpt("steps").hasArg()
 				.desc(" An integer representing the number of simulation\n" + "steps. Default value: 150.").build());
 
@@ -203,7 +188,7 @@ public class Main {
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
 		_outFile = line.getOptionValue("o");
 	}
-	
+
 	private static void parseModeOption(CommandLine line) throws ParseException {
 		String s = line.getOptionValue("m", _modeDefaultValue);
 		try {
@@ -212,16 +197,11 @@ public class Main {
 		} catch (Exception e) {
 			throw new ParseException("Invalid mode value: " + s);
 		}
-		
+
 	}
 
 	private static JSONObject parseWRTFactory(String v, Factory<?> factory) {
 
-		// the value of v is either a tag for the type, or a tag:data where data is a
-		// JSON structure corresponding to the data of that type. We split this
-		// information
-		// into variables 'type' and 'data'
-		//
 		int i = v.indexOf(":");
 		String type = null;
 		String data = null;
@@ -244,7 +224,6 @@ public class Main {
 			}
 		}
 
-		// build a corresponding JSON for that data, if found
 		JSONObject jo = null;
 		if (found) {
 			jo = new JSONObject();
@@ -282,26 +261,26 @@ public class Main {
 		controller.run(_steps, output);
 
 	}
-	
+
 	private static void startGUIMode() throws Exception {
 		ForceLaws fl = _forceLawsFactory.createInstance(_forceLawsInfo);
 		PhysicsSimulator pSimulator = new PhysicsSimulator(fl, _dtime);
 		Controller controller = new Controller(pSimulator, _bodyFactory, _forceLawsFactory);
-		
-		if(_inFile != null) {
+
+		if (_inFile != null) {
 			InputStream input = new FileInputStream(_inFile);
 			controller.loadData(input);
-		}	
-		
+		}
+
 		SwingUtilities.invokeAndWait(() -> new MainWindow(controller));
-		
+
 	}
 
 	private static void start(String[] args) throws Exception {
 		parseArgs(args);
-		if(_mode.equalsIgnoreCase("GUI"))
+		if (_mode.equalsIgnoreCase("GUI"))
 			startGUIMode();
-		else 
+		else
 			startBatchMode();
 	}
 

@@ -7,8 +7,6 @@ import simulator.misc.Vector2D;
 public class NewtonUniversalGravitation implements ForceLaws {
 
 	private Double g;
-	// NO ES CTE, SE PASA COMO PARAMETRO EN EL CONTRUCTOR PARA LAS GS DE DISTINTOS
-	// PLANETAS
 
 	public NewtonUniversalGravitation(double g) {
 		if (g <= 0) {
@@ -23,11 +21,10 @@ public class NewtonUniversalGravitation implements ForceLaws {
 
 			if (bi.getMass() != 0.0d) {
 
-				Vector2D fi = new Vector2D();// ES LA FI TOTAL
+				Vector2D fi = new Vector2D();
 
 				for (Body bj : bodies) {
 
-					// DIS = |Pi-PJ|
 					Double dis = bj.getPosition().distanceTo(bi.getPosition());
 
 					if (dis > 0) {
@@ -36,8 +33,7 @@ public class NewtonUniversalGravitation implements ForceLaws {
 								.scale((g * bi.getMass() * bj.getMass() / (dis * (dis)))));
 
 					}
-					// NO HAY ELSE CON LA OPCIÓN DE (DIS == 0) PORQ SI LA DISTANCIA DIS (PJ-PI) ES
-					// CERO, NO SE SUMA NINGUNA FUERZA, POR LO TANTO NO SE HACE NADA
+
 				}
 
 				bi.addForce(fi);
@@ -50,9 +46,7 @@ public class NewtonUniversalGravitation implements ForceLaws {
 			}
 		}
 	}
-	
-	//ME PARECE QUE LA G Q HAY QUE DEVOLVER ES ESTA PERO NO ESTOY MUY SEGURA -> 
-	//CAMBIAR EL NOMBRE SI ES ESTA A _G
+
 	public String toString() {
 		return "Newton’s Universal Gravitation with G = " + g;
 	}

@@ -12,13 +12,14 @@ import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
+@SuppressWarnings("serial")
 class GroupsTableModel extends AbstractTableModel implements SimulatorObserver {
 	String[] _header = { "Id", "Force Laws", "Bodies" };
 	List<BodiesGroup> _groups;
-	
+
 	GroupsTableModel(Controller ctrl) {
 		_groups = new ArrayList<>();
-		// REGISTRAR THIS COMO OBSERVADOR
+
 		ctrl.addObserver(this);
 	}
 
@@ -31,14 +32,14 @@ class GroupsTableModel extends AbstractTableModel implements SimulatorObserver {
 	public int getColumnCount() {
 		return this._header.length;
 	}
-	
+
 	@Override
 	public String getColumnName(int col) {
 		return _header[col];
 	}
 
 	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {// TIENE QUE DEVOLVER UN STRING???
+	public Object getValueAt(int rowIndex, int columnIndex) {
 		BodiesGroup bg = _groups.get(rowIndex);
 		Object ret = null;
 
@@ -52,7 +53,7 @@ class GroupsTableModel extends AbstractTableModel implements SimulatorObserver {
 		case 2:
 			String aux = "";
 			for (Body b : bg._bodiesRO)
-							aux += b.getId() + " " ;
+				aux += b.getId() + " ";
 			ret = aux;
 			break;
 		}
@@ -61,11 +62,12 @@ class GroupsTableModel extends AbstractTableModel implements SimulatorObserver {
 
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-		//SE QUEDA VACIO
+
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
-			public void run() {}
+			public void run() {
+			}
 
 		});
 	}
@@ -79,7 +81,7 @@ class GroupsTableModel extends AbstractTableModel implements SimulatorObserver {
 			public void run() {
 
 				_groups.clear();
-				
+
 				fireTableStructureChanged();
 			}
 
@@ -149,5 +151,6 @@ class GroupsTableModel extends AbstractTableModel implements SimulatorObserver {
 	}
 
 	@Override
-	public void onDeltaTimeChanged(double dt) {}
+	public void onDeltaTimeChanged(double dt) {
+	}
 }

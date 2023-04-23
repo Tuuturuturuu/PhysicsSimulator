@@ -37,7 +37,6 @@ public class Controller {
 
 			JSONArray jaG = jsonInput.getJSONArray("groups");
 
-			// ADD GROUPS
 			for (int k = 0; k < jaG.length(); ++k) {
 
 				physicsSimulator.addGroup(jaG.getString(k));
@@ -45,7 +44,6 @@ public class Controller {
 
 			JSONArray jaB = jsonInput.getJSONArray("bodies");
 
-			// ADD BODIES
 			for (int i = 0; i < jaB.length(); ++i) {
 				Body b = factoryBodies.createInstance(jaB.getJSONObject(i));
 
@@ -56,7 +54,7 @@ public class Controller {
 			if (jsonInput.has("laws")) {
 
 				JSONArray jaL = jsonInput.getJSONArray("laws");
-				// ADD FORCE LAW
+
 				for (int j = 0; j < jaL.length(); ++j) {
 
 					JSONObject joL = jaL.getJSONObject(j);
@@ -68,8 +66,7 @@ public class Controller {
 			}
 		}
 	}
-	
-	//BATCH 
+
 	public void run(int n, OutputStream out) {
 		JSONObject jo = new JSONObject();
 		JSONArray ja = new JSONArray();
@@ -89,23 +86,32 @@ public class Controller {
 		p.println(jo.toString());
 		p.close();
 	}
-	
-	// GUI RUN
-	public void run (int n) {
-		for(int i = 0; i < n; i++) 
+
+	public void run(int n) {
+		for (int i = 0; i < n; i++)
 			this.physicsSimulator.advance();
 	}
-	
-	public void reset() { this.physicsSimulator.reset();}
-	
-	public void setDeltaTime(double dt) { this.physicsSimulator.setDeltaTime(dt);}
-	
-	public void addObserver(SimulatorObserver o) { this.physicsSimulator.addObserver(o);}
-	
-	public void removeObserver(SimulatorObserver o) { this.physicsSimulator.removeObserver(o);}
-	
-	public List<JSONObject> getForceLawsInfo(){ return this.factoryLaws.getInfo();}
-	
+
+	public void reset() {
+		this.physicsSimulator.reset();
+	}
+
+	public void setDeltaTime(double dt) {
+		this.physicsSimulator.setDeltaTime(dt);
+	}
+
+	public void addObserver(SimulatorObserver o) {
+		this.physicsSimulator.addObserver(o);
+	}
+
+	public void removeObserver(SimulatorObserver o) {
+		this.physicsSimulator.removeObserver(o);
+	}
+
+	public List<JSONObject> getForceLawsInfo() {
+		return this.factoryLaws.getInfo();
+	}
+
 	public void setForcesLaws(String gId, JSONObject info) {
 		this.physicsSimulator.setForceLaws(gId, this.factoryLaws.createInstance(info));
 	}

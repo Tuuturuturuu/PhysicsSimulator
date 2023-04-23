@@ -8,10 +8,10 @@ import java.awt.event.WindowListener;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 
 import simulator.control.Controller;
 
+@SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 	private Controller _ctrl;
 
@@ -24,69 +24,61 @@ public class MainWindow extends JFrame {
 	private void initGUI() {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
-		
+
 		ControlPanel controlPanel = new ControlPanel(_ctrl);
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
-		
+
 		StatusBar statusBar = new StatusBar(_ctrl);
 		mainPanel.add(statusBar, BorderLayout.PAGE_END);
-		
-		//DEFINICION DEL PANEL DE TABLAS (USANDO UN BoxLayout vertical)
+
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
-		
+
 		InfoTable iTableGroups = new InfoTable("Groups", new GroupsTableModel(_ctrl));
 		InfoTable iTableBodies = new InfoTable("Bodies", new BodiesTableModel(_ctrl));
-		
+
 		contentPanel.setPreferredSize(new Dimension(500, 250));
-		
-		contentPanel.add(iTableGroups); 
-		contentPanel.add(iTableBodies); 
-		
+
+		contentPanel.add(iTableGroups);
+		contentPanel.add(iTableBodies);
+
 		addWindowListener(new WindowListener() {
 
 			@Override
-			public void windowOpened(WindowEvent e) {}
+			public void windowOpened(WindowEvent e) {
+			}
 
 			@Override
 			public void windowClosing(WindowEvent e) {
 				Utils.quit(MainWindow.this);
-				
 			}
 
 			@Override
-			public void windowClosed(WindowEvent e) {}
+			public void windowClosed(WindowEvent e) {
+			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
-			
+
 		});
-		
+
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		pack();
-		this.setLocationRelativeTo(null);;
+		this.setLocationRelativeTo(null);
 		setVisible(true);
 	}
 }
