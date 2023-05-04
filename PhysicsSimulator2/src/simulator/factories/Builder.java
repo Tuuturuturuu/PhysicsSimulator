@@ -22,9 +22,15 @@ public abstract class Builder<T> {
 		JSONObject info = new JSONObject();
 		info.put("type", _typeTag);
 		info.put("desc", _desc);
+		
+		JSONObject data = new JSONObject();
+		fillData(data);
+		info.put("data", data);
 		return info;
 	}
 
+	protected void fillData(JSONObject data) {}
+	
 	@Override
 	public String toString() {
 		return _desc;

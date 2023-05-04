@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -8,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -21,7 +23,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.control.Controller;
@@ -65,12 +66,16 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		setVisible(false);
 	}
 
-	public JTextField createFirstComponent() {
-		JTextField jtfText = new JTextField(
-				"Select a force law and provide values for the parameters in the Value column (default values used for parameters with no value).");
-		jtfText.setMaximumSize(new Dimension(900, 25));
-		jtfText.setEditable(false);
-		return jtfText;
+	public JPanel createFirstComponent() {
+		
+		JPanel firstComponent = new JPanel();
+		firstComponent.setLayout(new BoxLayout(firstComponent, BoxLayout.X_AXIS));
+		
+		  JLabel jtfText = new JLabel();
+		  jtfText.setText("<html><p>Select a force law and provide values for the parameters in the Value column (default values used for parameters with no value).</p></html>");
+		  firstComponent.add(jtfText);	
+
+		return firstComponent;
 	}
 
 	public JPanel createSecondComponent() {
@@ -145,20 +150,30 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				JSONObject jo1 = new JSONObject();
+				String s = "{";
+
 				for (int i = 0; i < _dataTableModel.getRowCount(); i++) {
+					s += _dataTableModel.getValueAt(i, 0).toString() + ":"
+							+ _dataTableModel.getValueAt(i, 1).toString();
 
-					if (_dataTableModel.getValueAt(i, 0).toString().equals("c")) {
+					if (i < _dataTableModel.getRowCount() - 1) {
+						s += ",";
+					}
+					/*
+					 * if (_dataTableModel.getValueAt(i, 0).toString().equals("c")) {
+					 * 
+					 * JSONArray jsonArray = new JSONArray(_dataTableModel.getValueAt(i,
+					 * 1).toString()); jo1.put("c", jsonArray); } else
+					 * jo1.put(_dataTableModel.getValueAt(i, 0).toString(),
+					 * _dataTableModel.getValueAt(i, 1).toString());
+					 */
 
-						JSONArray jsonArray = new JSONArray(_dataTableModel.getValueAt(i, 1).toString());
-						jo1.put("c", jsonArray);
-					} else
-						jo1.put(_dataTableModel.getValueAt(i, 0).toString(),
-								_dataTableModel.getValueAt(i, 1).toString());
 				}
+				s += "}";
 
 				JSONObject jo2 = new JSONObject();
-				jo2.put("data", jo1);
+				JSONObject joData = new JSONObject(s);
+				jo2.put("data", joData);
 				jo2.put("type", _forceLawsInfo.get(_selectedLawsIndex).getString("type"));
 
 				try {
@@ -238,16 +253,12 @@ class ForceLawsDialog extends JDialog implements SimulatorObserver {
 
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				_groupsModel.removeAllElements();
+		_groupsModel.removeAllElements();
 
-				for (BodiesGroup bg : groups.values()) {
-					_groupsModel.addElement(bg.getId());
-				}
-			}
-		});
+		for (BodiesGroup bg : groups.values()) {
+			_groupsModel.addElement(bg.getId());
+		}
+
 	}
 
 	@Override

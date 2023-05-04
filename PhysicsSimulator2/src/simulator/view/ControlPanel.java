@@ -205,7 +205,7 @@ class ControlPanel extends JPanel implements SimulatorObserver {
 				stepsSpinner.setEnabled(false);
 				dtText.setEnabled(false);
 
-				_ctrl.setDeltaTime(_dt);
+				_ctrl.setDeltaTime(Double.parseDouble(dtText.getText()));
 				run_sim(_steps);
 			}
 		});
